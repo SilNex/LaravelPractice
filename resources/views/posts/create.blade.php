@@ -16,6 +16,11 @@
                     <small id="helpId" class="form-text text-danger">{{ ($errors->has('description')) ? $errors->first('description') : "" }}</small>
                 </div>
                 <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control {{ ($errors->has('password')) ? 'is-invalid' : ($errors->any() ? 'is-valid' : '') }}" name="password" id="password" value="{{ old('password') }}" aria-describedby="helpId">
+                    <small id="helpId" class="form-text text-muted"> Password is option </small>
+                </div>
+                <div class="form-group">
                     <div class="">
                         <button type="submit" class="btn btn-primary">Create</button>
                     </div>

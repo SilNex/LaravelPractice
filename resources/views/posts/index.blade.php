@@ -26,6 +26,7 @@
                 <h5 class="text-secondary">I want to go home...</h5>
             </div>
             @endforelse
+            <a class="btn btn-primary" href="{{ route('posts.create') }}" role="button">Create Post</a>
         </div>
     </div>
 </div>
