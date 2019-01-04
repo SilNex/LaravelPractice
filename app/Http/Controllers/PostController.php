@@ -24,10 +24,7 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
-        if(Auth::check())
-            return view('posts.index', compact('posts'));
-        else
-            return redirect('/login');
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -46,12 +43,14 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\StorePost  $validated
+     * @param  \Illuminate\Http\StorePost  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePost $validated)
+    public function store(StorePost $request)
     {
-        $post = Post::create($validated);
+        $post = Post::create($request->merge([
+            'password' => ($request->get('password') ? bcrypt($request->get('password')) : null),
+        ])->toArray());
 
         return redirect("/posts/{$post->id}");
     }

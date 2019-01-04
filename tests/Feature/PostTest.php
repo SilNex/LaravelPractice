@@ -20,18 +20,42 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function create_post_with_auth()
+    public function can_create_post_without_password()
     {
-        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+        $post = factory(Post::class)->make([
+            'password' => null,
+        ]);
+
+        $index = 1;
+        $response = $this->actingAs($user)->post('/posts', $post->toArray());
+        $response->assertRedirect("/posts/{$index}");
+
+        $this->assertDatabaseHas('posts', [
+            'title' => $post->title,
+            'description' => $post->description,
+        ]);
+    }
+
+    /** @test */
+    public function can_post_create_with_password()
+    {
+        $this->withExceptionHandling();
 
         $user = factory(User::class)->create();
-        $post = factory(Post::class)->make();
+        $post = factory(Post::class)->make([
+            'password' => 'my_test_password',
+        ]);
 
-        $response = $this->actingAs($user)->post('/posts', $post->toArray());
-        
-        $response->assertRedirect('/posts');
-        $response->assertSee($post->title);
+        $index = 1;
+        $response = $this->actingAs($user)->post('/posts', $post->makeVisible('password')->toArray());
+        $response->assertRedirect("/posts/{$index}");
 
+        $this->assertDatabaseHas('posts', [
+            'title' => $post->title,
+            'description' => $post->description
+        ]);
+
+        $this->assertTrue(password_verify('my_test_password', Post::find($index)->password));
     }
-    
 }

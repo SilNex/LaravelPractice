@@ -26,8 +26,9 @@ class StorePost extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'max:255', 'min:10', new StorePostWithTEST],
+            'title' => ['required', 'max:255', 'min:10'],//, new StorePostWithTEST
             'description' => ['required', 'min:10'],
+            'password' => ['nullable', 'string']
         ];
     }
 }
