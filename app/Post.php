@@ -11,4 +11,8 @@ class Post extends Model
         'description',
         'password'
     ];
+
+    protected $hidden = [
+        'password'
+    ];
 }
