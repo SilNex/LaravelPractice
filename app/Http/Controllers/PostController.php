@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StorePost;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        return "Post index page";
+        $posts = Post::all();
+
+        if(Auth::check())
+            return view('posts.index', compact('posts'));
+        else
+            return redirect('/login');
     }
 
     /**
@@ -24,18 +37,23 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        if(Auth::check())
+            return view('posts.create', compact('posts'));
+        else
+            return redirect('/login');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StorePost  $validated
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePost $validated)
     {
-        //
+        $post = Post::create($validated);
+
+        return redirect("/posts/{$post->id}");
     }
 
     /**
