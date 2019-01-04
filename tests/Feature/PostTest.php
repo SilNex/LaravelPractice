@@ -40,8 +40,6 @@ class PostTest extends TestCase
     /** @test */
     public function can_post_create_with_password()
     {
-        $this->withExceptionHandling();
-
         $user = factory(User::class)->create();
         $post = factory(Post::class)->make([
             'password' => 'my_test_password',
@@ -57,5 +55,18 @@ class PostTest extends TestCase
         ]);
 
         $this->assertTrue(password_verify('my_test_password', Post::find($index)->password));
+    }
+
+    /** @Test */
+    public function can_get_post_list_whitout_auth()
+    {
+        $posts = factory(Post::class, 10)->create();
+
+        $response = $this->get('/posts');
+
+        $response->assertTrue(Auth::guest());
+        $response->assertSeeInOrder($posts->map(function ($post) {
+            return $post->title;
+        })->toArray());
     }
 }
