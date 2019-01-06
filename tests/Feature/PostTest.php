@@ -57,16 +57,29 @@ class PostTest extends TestCase
         $this->assertTrue(password_verify('my_test_password', Post::find($index)->password));
     }
 
-    /** @Test */
+    /** @test */
     public function can_get_post_list_whitout_auth()
     {
         $posts = factory(Post::class, 10)->create();
 
         $response = $this->get('/posts');
 
-        $response->assertTrue(Auth::guest());
+        $this->assertTrue(Auth::guest());
         $response->assertSeeInOrder($posts->map(function ($post) {
             return $post->title;
         })->toArray());
+    }
+
+    /** @test */
+    public function can_read_post_that_has_password_without_password()
+    {
+        $post = factory(Post::class)->create();
+        $index = 1;
+
+        $response = $this->get("/posts/{$index}");
+
+        $this->assertGuest();
+        $response->assertRedirect("/posts/{$index}");
+        $response->assertViewIs('posts.passCheck');
     }
 }
