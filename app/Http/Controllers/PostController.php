@@ -12,7 +12,7 @@ class PostController extends Controller
 
     public function __construct()
     {
-
+        // 
     }
 
     /**
@@ -57,6 +57,19 @@ class PostController extends Controller
     }
 
     /**
+     * Check post password
+     */
+    public function passwordCheck(Post $post, Request $request)
+    {
+        if (password_verify($request->password, $post->password)) {
+            session(['post_' . $post->id . '_password' => $request->password]);
+            return redirect($request->getRequestUri());
+        } else {
+            return view('posts.passCheck', ['post' => $post])->withErrors(['inValidPasswrod' => 'Wrong Password']);
+        }
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Post  $post
@@ -72,37 +85,39 @@ class PostController extends Controller
         }
     }
 
-    public function passwordCheck(Post $post, Request $request)
-    {
-        if (password_verify($request->password, $post->password)) {
-            session(['post_' . $post->id . '_password' => $request->password]);
-            return redirect("/posts/{$post->id}");
-        } else {
-            return view('posts.passCheck', ['post' => $post])->withErrors(['inValidPasswrod'=>'Wrong Password']);
-        }
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Post $post, Request $request)
     {
-        // return view('posts.edit', compact('post'));
+        if (Auth::check()) {
+            $postPassword = session('post_' . $post->id . '_password');
+            if (is_null($post->password) || password_verify(($postPassword ? $postPassword : $request->password), $post->password)) {
+                return view('posts.edit', compact('post'));
+            } else {
+                return view('posts.passCheck', ['post' => $post]);
+            }
+        } else {
+            return redirect('/login');
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\StorePost  $request
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(StorePost $request, Post $post)
     {
-        //
+        $post->update($request->merge([
+            'password' => ($request->password === $post->password ? $request->password : bcrypt($request->password)),
+        ])->toArray());
+        return redirect("/posts/{$post->id}");
     }
 
     /**
@@ -113,6 +128,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+
     }
 }

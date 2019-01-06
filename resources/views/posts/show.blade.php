@@ -5,8 +5,7 @@
         <div class="border rounded shadow col-10 p-5 bg-white card">
             <div class="card-body">
                 <h4 class="card-title">{{ $post->title }}</h4>
-                {{--
-                <h6 class="card-subtitle text-muted">부제목</h6> --}}
+                <h6 class="card-subtitle text-muted"><a href="{{ route('posts.edit', ['post' => ($post->id)]) }}">수정</a></h6>
             </div>
             <div class="card-body">
                 <p class="card-text">{{ $post->description }}</p>

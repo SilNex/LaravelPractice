@@ -10,6 +10,7 @@
                     <small id="helpId" class="form-text text-danger">{{ $errors->first('inValidPasswrod') }}</small>
                     <input type="password" class="form-control" name="password" id="password" aria-describedby="helpId" placeholder="">
                     <small id="helpId" class="form-text text-muted">Post {{ $post->title }} Passowrd</small>
+                    <button type="submit" class="btn btn-primary">확인</button>
                 </div>
             </form>
         </div>

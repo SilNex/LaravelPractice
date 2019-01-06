@@ -104,12 +104,39 @@ class PostTest extends TestCase
         $post = factory(Post::class)->create([
             'password' => bcrypt('TestPassword'),
         ]);
-        $index = $post->id;
-        $response = $this->post("/posts/{$index}", ['password' => 'TestPassword']);
+        $response = $this->post("/posts/{$post->id}", ['password' => 'TestPassword']);
 
         $this->assertGuest();
-        $response->assertRedirect("/posts/{$index}");
-        $response->assertSessionHas("post_{$index}_password");
-        $this->get("/posts/{$index}")->assertSee($post->description);
+        $response->assertRedirect("/posts/{$post->id}");
+        $response->assertSessionHas("post_{$post->id}_password");
+        $this->get("/posts/{$post->id}")->assertSee($post->description);
+    }
+
+    /** @test */
+    public function cannot_access_edit_page_post_that_has_password_without_password()
+    {
+        $this->withExceptionHandling();
+        
+        $user = factory(User::class)->create();
+        $post = factory(Post::class)->create([
+            'password' => bcrypt('TestPassword'),
+        ]);
+
+        $response = $this->actingAs($user)->get("/posts/{$post->id}/edit");
+        $response->assertViewIs("posts.passCheck");
+    }
+
+    public function can_edit_post_that_has_not_password()
+    {
+        $this->withExceptionHandling();
+        
+        $user = factory(User::class)->create();
+        $post = factory(Post::class)->create();
+
+        $response = $this->actingAs($user)->post("/posts/{$post->id}/edit", [
+            'title' => 'editTtile',
+        ]);
+        $response->assertRedirect("/posts/{$post->id}");
+        $response->assertSee('editTtile');
     }
 }
