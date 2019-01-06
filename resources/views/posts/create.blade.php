@@ -8,12 +8,12 @@
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control {{ ($errors->has('title')) ? 'is-invalid' : ($errors->any() ? 'is-valid' : '') }}" name="title" id="title" value="{{ old('title') }}" aria-describedby="helpId" placeholder="Post Ttile">
-                    <small id="helpId" class="form-text text-danger">{{ ($errors->has('title')) ? $errors->first('title') : "" }}</small>
+                    <small id="helpId" class="form-text text-danger">{{ $errors->first('title') }}</small>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : ($errors->any() ? 'is-valid' : '') }}" name="description" id="description" aria-describedby="helpId" rows="5" placeholder="Post Description">{{ old('description') }}</textarea>
-                    <small id="helpId" class="form-text text-danger">{{ ($errors->has('description')) ? $errors->first('description') : "" }}</small>
+                    <small id="helpId" class="form-text text-danger">{{ $errors->first('description') }}</small>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>

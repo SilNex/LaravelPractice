@@ -12,7 +12,7 @@ class PostController extends Controller
 
     public function __construct()
     {
-        
+
     }
 
     /**
@@ -34,7 +34,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        if(Auth::check())
+        if (Auth::check())
             return view('posts.create', compact('posts'));
         else
             return redirect('/login');
@@ -49,8 +49,9 @@ class PostController extends Controller
     public function store(StorePost $request)
     {
         $post = Post::create($request->merge([
-            'password' => ($request->get('password') ? bcrypt($request->get('password')) : null),
+            'password' => ($request->password ? bcrypt($request->password) : null),
         ])->toArray());
+        session(["post_{$post->id}_password" => $request->get('password')]);
 
         return redirect("/posts/{$post->id}");
     }
@@ -61,9 +62,24 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Post $post, Request $request)
     {
-        //
+        $postPassword = session('post_' . $post->id . '_password');
+        if (password_verify(($postPassword ? $postPassword : $request->password), $post->password)) {
+            return view('posts.show', compact('post'));
+        } else {
+            return view('posts.passCheck', ['post' => $post]);
+        }
+    }
+
+    public function passwordCheck(Post $post, Request $request)
+    {
+        if (password_verify($request->password, $post->password)) {
+            session(['post_' . $post->id . '_password' => $request->password]);
+            return redirect("/posts/{$post->id}");
+        } else {
+            return view('posts.passCheck', ['post' => $post])->withErrors(['inValidPasswrod'=>'Wrong Password']);
+        }
     }
 
     /**
@@ -74,7 +90,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        // return view('posts.edit', compact('post'));
     }
 
     /**

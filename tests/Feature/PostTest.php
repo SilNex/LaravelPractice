@@ -71,15 +71,31 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function can_read_post_that_has_password_without_password()
+    public function cannot_read_guest_post_that_has_password_without_password()
     {
-        $post = factory(Post::class)->create();
-        $index = 1;
+        $post = factory(Post::class)->create([
+            'password' => 'TestPassword',
+        ]);
+        $index = $post->id;
 
         $response = $this->get("/posts/{$index}");
 
         $this->assertGuest();
-        $response->assertRedirect("/posts/{$index}");
         $response->assertViewIs('posts.passCheck');
+    }
+
+    /** @test */
+    public function can_read_guest_post_that_has_password_with_password()
+    {
+        $post = factory(Post::class)->create([
+            'password' => bcrypt('TestPassword'),
+        ]);
+        $index = $post->id;
+        $response = $this->post("/posts/{$index}", ['password' => 'TestPassword']);
+
+        $this->assertGuest();
+        $response->assertRedirect("/posts/{$index}");
+        $response->assertSessionHas("post_{$index}_password");
+        $this->get("/posts/{$index}")->assertSee($post->description);
     }
 }
