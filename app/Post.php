@@ -16,4 +16,9 @@ class Post extends Model
     protected $hidden = [
         'password'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
