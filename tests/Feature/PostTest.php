@@ -70,6 +70,20 @@ class PostTest extends TestCase
         })->toArray());
     }
 
+        /** @test */
+        public function can_read_guest_post_that_has_not_password()
+        {
+            $post = factory(Post::class)->create([
+                'password' => 'TestPassword',
+            ]);
+            $index = $post->id;
+    
+            $response = $this->get("/posts/{$index}");
+    
+            $this->assertGuest();
+            $response->assertViewIs('posts.passCheck');
+        }
+
     /** @test */
     public function cannot_read_guest_post_that_has_password_without_password()
     {

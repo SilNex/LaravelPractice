@@ -65,7 +65,7 @@ class PostController extends Controller
     public function show(Post $post, Request $request)
     {
         $postPassword = session('post_' . $post->id . '_password');
-        if (password_verify(($postPassword ? $postPassword : $request->password), $post->password)) {
+        if (is_null($post->password) || password_verify(($postPassword ? $postPassword : $request->password), $post->password)) {
             return view('posts.show', compact('post'));
         } else {
             return view('posts.passCheck', ['post' => $post]);
