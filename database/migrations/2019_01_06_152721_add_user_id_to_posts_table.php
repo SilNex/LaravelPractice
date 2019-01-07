@@ -14,7 +14,10 @@ class AddUserIdToPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
+            if (env('APP_ENV') === 'testing')
+                $table->unsignedInteger('user_id')->nullable();
+            else
+                $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

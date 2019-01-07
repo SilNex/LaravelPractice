@@ -71,7 +71,8 @@ class PostController extends Controller
             session(['post_' . $post->id . '_password' => $request->password]);
             return redirect($request->getRequestUri());
         } else {
-            return view('posts.passCheck', ['post' => $post])->withErrors(['inValidPasswrod' => 'Wrong Password']);
+            return view('posts.passCheck', ['post' => $post])
+                ->withErrors(['inValidPasswrod' => 'Wrong Password']);
         }
     }
 
