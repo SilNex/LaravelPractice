@@ -6,13 +6,14 @@ use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePost;
+use Illuminate\Support\Facades\Hash;
 
 class PostController extends Controller
 {
 
     public function __construct()
     {
-        // 
+        $this->middleware('auth')->except(['index', 'show', 'passCheck']);
     }
 
     /**
@@ -34,10 +35,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        if (Auth::check())
-            return view('posts.create', compact('posts'));
-        else
-            return redirect('/login');
+        return view('posts.create');
     }
 
     /**
@@ -48,16 +46,24 @@ class PostController extends Controller
      */
     public function store(StorePost $request)
     {
-        $post = Post::create($request->merge([
-            'password' => ($request->password ? bcrypt($request->password) : null),
-        ])->toArray());
-        session(["post_{$post->id}_password" => $request->get('password')]);
+        $attributes = $request->validated();
+
+        if ($request->filled('password'))
+            $attributes['password'] = Hash::make($request->password);
+
+        $attributes['user_id'] = auth()->id();
+
+        $post = Post::create($attributes);
+
+        if ($request->filled('password'))
+            session(["post_{$post->id}_password" => $request->password]);
 
         return redirect("/posts/{$post->id}");
     }
 
     /**
      * Check post password
+     * /posts/{post} | /posts/{posts}/edit
      */
     public function passwordCheck(Post $post, Request $request)
     {
@@ -77,8 +83,7 @@ class PostController extends Controller
      */
     public function show(Post $post, Request $request)
     {
-        $postPassword = session('post_' . $post->id . '_password');
-        if (is_null($post->password) || password_verify(($postPassword ? $postPassword : $request->password), $post->password)) {
+        if ($post->vaildatePassword($request->password)) {
             return view('posts.show', compact('post'));
         } else {
             return view('posts.passCheck', ['post' => $post]);
@@ -93,15 +98,10 @@ class PostController extends Controller
      */
     public function edit(Post $post, Request $request)
     {
-        if (Auth::check()) {
-            $postPassword = session('post_' . $post->id . '_password');
-            if (is_null($post->password) || password_verify(($postPassword ? $postPassword : $request->password), $post->password)) {
-                return view('posts.edit', compact('post'));
-            } else {
-                return view('posts.passCheck', ['post' => $post]);
-            }
+        if ($post->vaildatePassword($request->password)) {
+            return view('posts.edit', compact('post'));
         } else {
-            return redirect('/login');
+            return view('posts.passCheck', ['post' => $post]);
         }
     }
 
@@ -114,9 +114,15 @@ class PostController extends Controller
      */
     public function update(StorePost $request, Post $post)
     {
-        $post->update($request->merge([
-            'password' => ($request->password === $post->password ? $request->password : bcrypt($request->password)),
-        ])->toArray());
+        $attributes = $request->validated();
+
+        if ($post->password !== $request->password) {
+            $attributes['password'] = Hash::make($request->password);
+            session(["post_{$post->id}_password" => $request->password]);
+        }
+
+        $post->update($attributes);
+
         return redirect("/posts/{$post->id}");
     }
 
@@ -128,6 +134,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-
+        if ($post->user->id === auth()->id()) {
+            $post->delete();
+        }
+        return redirect('/posts');
     }
 }

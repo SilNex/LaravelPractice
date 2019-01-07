@@ -13,12 +13,21 @@
                     <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="text-dark">
                         <h4 class="border-bottom pl-0 text-truncate">{{ $post->title }}</h4>
                     </a>
-                    <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="right" title="Author Full Name">
-                        Author
+                    <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="right" title="{{ $post->user->email }}">
+                        {{ $post->user->name }}
                     </button>
                 </div>
-                <div class="text-truncate col-10 lead text-secondary">
-                    {{ ($post->password ? 'Locked post' : $post->description) }}
+                <div class="row pl-3 pr-1 justify-content-between">
+                    <div class="text-truncate col-10 lead text-secondary">
+                        {{ ($post->password ? 'Locked post' : $post->description) }}
+                    </div>
+                    @if ($post->user->id === auth()->id())
+                        <form action="{{ route('posts.index') . '/' . $post->id }}" class="form-inline" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    @endif
                 </div>
             </div>
             @empty
