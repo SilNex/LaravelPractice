@@ -55,25 +55,7 @@ class PostController extends Controller
 
         $post = Post::create($attributes);
 
-        if ($request->filled('password'))
-            session(["post_{$post->id}_password" => $request->password]);
-
         return redirect("/posts/{$post->id}");
-    }
-
-    /**
-     * Check post password
-     * /posts/{post} | /posts/{posts}/edit
-     */
-    public function passwordCheck(Post $post, Request $request)
-    {
-        if (password_verify($request->password, $post->password)) {
-            session(['post_' . $post->id . '_password' => $request->password]);
-            return redirect($request->getRequestUri());
-        } else {
-            return view('posts.passCheck', ['post' => $post])
-                ->withErrors(['inValidPasswrod' => 'Wrong Password']);
-        }
     }
 
     /**
@@ -119,7 +101,6 @@ class PostController extends Controller
 
         if ($post->password !== $request->password) {
             $attributes['password'] = Hash::make($request->password);
-            session(["post_{$post->id}_password" => $request->password]);
         }
 
         $post->update($attributes);
@@ -139,5 +120,20 @@ class PostController extends Controller
             $post->delete();
         }
         return redirect('/posts');
+    }
+
+    /**
+     * Check post password
+     * /posts/{post} | /posts/{posts}/edit
+     */
+    public function passwordCheck(Post $post, Request $request)
+    {
+        if (password_verify($request->password, $post->password)) {
+            session(['post_' . $post->id . '_password' => $request->password]);
+            return redirect($request->getRequestUri());
+        } else {
+            return view('posts.passCheck', ['post' => $post])
+                ->withErrors(['inValidPasswrod' => 'Wrong Password']);
+        }
     }
 }

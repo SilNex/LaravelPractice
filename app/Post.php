@@ -33,8 +33,6 @@ class Post extends Model
         if (!$this->hasPassword() || auth()->id() === $this->user_id) {
             return true;
         } else {
-            $session = session('post_' . $this->id . '_password');
-            $password = (is_null($session) ? $password : $session);
             return Hash::check($password, $this->password);
         }
     }
