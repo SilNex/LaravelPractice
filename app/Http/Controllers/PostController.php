@@ -14,6 +14,7 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show', 'passCheck']);
+        $this->middleware('post.passHashing')->only(['index']);
     }
 
     /**
@@ -21,8 +22,9 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        dump($request);
         $posts = Post::all();
 
         return view('posts.index', compact('posts'));
