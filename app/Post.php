@@ -37,9 +37,13 @@ class Post extends Model
         }
     }
 
-    public function hasPost($id)
+    public function previousPost()
     {
-        return (is_null(Post::find($id)) ? false : true);
+        $previousPost = Post::where('id', '<', $this->id)->first()->toSql();
+        // if () {
+        //     return route(['posts.show', $previousPost->id]);
+        // }
     }
+
 
 }

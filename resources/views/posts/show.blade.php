@@ -11,6 +11,7 @@
                 <p class="card-text">{{ $post->description }}</p>
                 <br>
                 <div class="row justify-content-between">
+                    {{ }}
                     <a href="{{ route('posts.show', ['post' => ($post->id - 1)]) }}" class="card-link">이전 글</a>
                     <a href="{{ route('posts.show', ['post' => ($post->id + 1)]) }}" class="card-link">다음 글</a>
                 </div>
