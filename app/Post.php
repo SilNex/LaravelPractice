@@ -39,11 +39,22 @@ class Post extends Model
 
     public function previousPost()
     {
-        $previousPost = Post::where('id', '<', $this->id)->first()->toSql();
-        // if () {
-        //     return route(['posts.show', $previousPost->id]);
-        // }
+        $previousPost = Post::where('id', '<', $this->id)->first();
+        if ($previousPost) {
+            return route(['posts.show', $previousPost->id]);
+        } else {
+            return route(['posts.index']);
+        }
     }
 
+    public function nextPost()
+    {
+        $nextPost = Post::where('id', '>', $this->id)->first();
+        if ($nextPost) {
+            return route(['posts.show', $previousPost->id]);
+        } else {
+            return route(['posts.index']);
+        }
+    }
 
 }
