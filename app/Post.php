@@ -37,23 +37,23 @@ class Post extends Model
         }
     }
 
-    public function previousPost()
+    public function previousPostId()
     {
-        $previousPost = Post::where('id', '<', $this->id)->first();
-        if ($previousPost) {
-            return route(['posts.show', $previousPost->id]);
+        $previousPostId = Post::where('id', '<', $this->id)->take(1)->pluck('id');
+        if ($previousPostId->isNotEmpty()) {
+            return $previousPostId->first();
         } else {
-            return route(['posts.index']);
+            return null;
         }
     }
 
-    public function nextPost()
+    public function nextPostId()
     {
-        $nextPost = Post::where('id', '>', $this->id)->first();
-        if ($nextPost) {
-            return route(['posts.show', $previousPost->id]);
+        $nextPostId = Post::where('id', '>', $this->id)->take(1)->pluck('id');
+        if ($nextPostId->isNotEmpty()) {
+            return $nextPostId->first();
         } else {
-            return route(['posts.index']);
+            return null;
         }
     }
 
