@@ -21,3 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/posts/{post}', 'PostController@passwordCheck')->name('posts.passCheck');
 Route::resource('posts', 'PostController');
+Route::resource('profile', 'UserProfileController');
