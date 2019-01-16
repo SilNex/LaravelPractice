@@ -67,4 +67,34 @@ class PostTest extends TestCase
         $response->assertRedirect('/posts/1');
         $response->assertSessionHas('post_1_password');
     }
+
+    /** @test */
+    function update_post_without_password()
+    {
+        $user = factory(User::class)->create();
+        $post = factory(Post::class)->make();
+        $data = [
+            'title' => 'Updated Title',
+            'description' => 'Updated Description',
+        ];
+
+        $this->actingAs($user)->post('/posts', $post->toArray());
+        
+        $this->actingAs($user)->put('/posts/1', $data);
+
+        $this->assertDatabaseHas('posts', $data);
+    }
+
+    /** @test */
+    function delete_post_without_password()
+    {
+        $user = factory(User::class)->create();
+        $post = factory(Post::class)->make();
+        
+        $this->actingAs($user)->post('/posts', $post->toArray());
+
+        $this->actingAs($user)->delete('/posts/1');
+
+        $this->assertDatabaseMissing('posts', $post->toArray());
+    }
 }
