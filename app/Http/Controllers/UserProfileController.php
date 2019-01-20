@@ -13,7 +13,7 @@ class UserProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('passwordHashing');
+        $this->middleware('passwordHashing')->only(['update']);
     }
 
     public function show()
@@ -31,7 +31,7 @@ class UserProfileController extends Controller
         // add validate
         $attribute = [
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
         ];
         Auth::user()->update($attribute);
         return back();

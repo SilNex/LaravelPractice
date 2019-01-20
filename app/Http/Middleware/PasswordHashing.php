@@ -18,7 +18,6 @@ class PasswordHashing
     {
         if ($request->password)
             $request->password = Hash::make($request->password);
-        // 의미 없는 결과를 냄
         return $next($request);
     }
 }

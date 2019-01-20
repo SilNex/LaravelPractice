@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserProfileTest extends TestCase
 {
@@ -43,14 +44,18 @@ class UserProfileTest extends TestCase
             'password' => 'newPassword',
         ];
 
-        $response = $this->actingAs($user)->put('/profile', $data);
+        $this->actingAs($user)->put('/profile', $data);
 
         $this->assertDatabaseHas('users', [
-            'email' => 'test@test.com'
+            'email' => 'test@test.com',
         ]);
         $this->assertDatabaseMissing('users', [
-            'name' => 'Test',
-            'password' => $user->password,
+            'name' => 'Test'
         ]);
+
+        $response = $this->post('/login', $data);
+        
+        $response->assertRedirect('/home');
+        $this->assertAuthenticatedAs($user);
     }
 }
