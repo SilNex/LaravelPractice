@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Hash;
 
-class PostPassHashing
+class PasswordHashing
 {
     /**
      * Handle an incoming request.
@@ -18,6 +18,7 @@ class PostPassHashing
     {
         if ($request->password)
             $request->password = Hash::make($request->password);
+        // 의미 없는 결과를 냄
         return $next($request);
     }
 }

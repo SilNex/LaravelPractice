@@ -14,7 +14,7 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show', 'passCheck']);
-        $this->middleware('post.passHashing')->only(['index']);
+        $this->middleware('passwordHashing')->only(['index']);
     }
 
     /**

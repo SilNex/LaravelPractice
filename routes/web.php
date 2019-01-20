@@ -21,4 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/posts/{post}', 'PostController@passwordCheck')->name('posts.passCheck');
 Route::resource('posts', 'PostController');
-Route::resource('profile', 'UserProfileController');
+Route::get('/profile', 'UserProfileController@show')->name('profile.show');
+Route::put('/profile', 'UserProfileController@update')->name('profile.update');
+

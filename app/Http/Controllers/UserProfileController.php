@@ -3,38 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserProfileController extends Controller
 {
 
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('auth');
+        $this->middleware('passwordHashing');
     }
 
-    public function create()
+    public function show()
     {
-        //
+        return Auth::user();
     }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
+    
     public function edit($id)
     {
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // add validate
+        $attribute = [
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ];
+        Auth::user()->update($attribute);
+        return back();
     }
 
     public function destroy($id)
