@@ -21,18 +21,16 @@ class UserProfileController extends Controller
         return Auth::user();
     }
     
-    public function edit($id)
+    public function edit()
     {
-        //
+        return Auth::user();
     }
 
     public function update(Request $request)
     {
-        // add validate
-        $attribute = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+        $attribute = $request->validate([
+            'email' => ['required', 'email'],
+        ]);
         Auth::user()->update($attribute);
         return back();
     }
