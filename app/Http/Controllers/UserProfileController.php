@@ -16,9 +16,9 @@ class UserProfileController extends Controller
         $this->middleware('passwordHashing')->only(['update']);
     }
 
-    public function show()
+    public function show(User $user)
     {
-        return Auth::user();
+        return $user;
     }
     
     public function edit()
@@ -35,7 +35,7 @@ class UserProfileController extends Controller
         return back();
     }
 
-    public function destroy($id)
+    public function destroy()
     {
         //
     }

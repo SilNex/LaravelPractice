@@ -56,19 +56,4 @@ class UserProfileTest extends TestCase
         $response->assertRedirect('/home');
         $this->assertAuthenticatedAs($user);
     }
-
-    /** @test */
-    function update_invalid_user_profile()
-    {
-        $user = $this->user;
-        $data = [
-            'name' => 'Test',
-            'email' => 'test',
-            'password' => 'newPassword',
-        ];
-
-        $response = $this->actingAs($user)->put('/profile', $data);
-        // how to catch vaildation error? 
-        $this->assertDatabaseHas('posts', $user->toArray());
-    }
 }
