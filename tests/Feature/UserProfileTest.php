@@ -56,4 +56,16 @@ class UserProfileTest extends TestCase
         $response->assertRedirect('/home');
         $this->assertAuthenticatedAs($user);
     }
+
+    /** @test */
+    function delete_user()
+    {
+        $user = $this->user;
+
+        $response = $this->actingAs($user)->delete('/profile');
+        
+        $response->assertRedirect('/');
+
+        $this->assertDatabaseMissing('users', $user->toArray());
+    }
 }

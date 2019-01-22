@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
-use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserProfileController extends Controller
@@ -16,9 +16,10 @@ class UserProfileController extends Controller
         $this->middleware('passwordHashing')->only(['update']);
     }
 
-    public function show(User $user)
+    public function show()
     {
-        return $user;
+        Auth::user()->delete();
+        return Auth::user();
     }
     
     public function edit()
@@ -37,6 +38,11 @@ class UserProfileController extends Controller
 
     public function destroy()
     {
-        //
+        if (Auth::user()->delete()) {
+            Session::flush();
+            redirect('/');
+        } else {
+            back();
+        }
     }
 }
