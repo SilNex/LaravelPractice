@@ -24,5 +24,5 @@ Route::resource('posts', 'PostController');
 
 Route::get('/profile', 'UserProfileController@show')->name('profile.show');
 Route::put('/profile', 'UserProfileController@update')->name('profile.update');
-Route::delete('/profile', 'UserProfileController@update')->name('profile.destroy');
+Route::delete('/profile', 'UserProfileController@destroy')->name('profile.destroy');
 

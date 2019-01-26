@@ -63,8 +63,6 @@ class UserProfileTest extends TestCase
         $user = $this->user;
 
         $response = $this->actingAs($user)->delete('/profile');
-        
-        dump($response);
 
         $response->assertRedirect('/');
 

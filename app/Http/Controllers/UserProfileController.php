@@ -18,7 +18,6 @@ class UserProfileController extends Controller
 
     public function show()
     {
-        Auth::user()->delete();
         return Auth::user();
     }
     
@@ -39,10 +38,9 @@ class UserProfileController extends Controller
     public function destroy()
     {
         if (Auth::user()->delete()) {
-            Session::flush();
-            redirect('/');
+            return redirect('/');
         } else {
-            back();
+            return back();
         }
     }
 }
