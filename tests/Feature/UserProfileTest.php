@@ -64,6 +64,8 @@ class UserProfileTest extends TestCase
 
         $response = $this->actingAs($user)->delete('/profile');
         
+        dump($response);
+
         $response->assertRedirect('/');
 
         $this->assertDatabaseMissing('users', $user->toArray());
