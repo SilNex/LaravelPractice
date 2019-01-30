@@ -10,8 +10,10 @@ class CommentController extends Controller
 {
     public function index(Request $request)
     {
-        $comments = Post::find($request->route('post'));
-        dump($comments->comments());
+        $post = Post::findOrFail($request->route('post'));
+        $post->comments()->each(function ($comment) {
+            dump($comment);
+        });
         return;
     }
 
@@ -38,7 +40,7 @@ class CommentController extends Controller
 
     public function show(Comment $comment)
     {
-        dump($comment->post());
+        dump($comment);
         return $comment;
     }
 

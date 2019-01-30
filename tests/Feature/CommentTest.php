@@ -23,18 +23,31 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function add_commnet_on_post()
+    public function add_comment_on_post()
     {
         $comment = factory(comment::class)->make([
             'user_id' => $this->user->id,
             'post_id' => $this->post->id,
         ]);
-        // post request commnet create
+        // post request comment create
         $response = $this->actingAs($this->user)->post("/posts/{$this->post->id}/comments", $comment->toArray());
         // $response->dump();
         // check db
         $this->assertDatabaseHas('comments', [
             'description' => $comment->description,
         ]);
+    }
+
+    /** @test */
+    public function add_comment_on_the_post_have_password() {
+        // update password in post
+
+        // add test without password
+
+        // check false
+
+        // add test with password
+
+        // check true
     }
 }

@@ -11,8 +11,12 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Post::class, 20)->create([
-            'user_id' => rand(1, 10),
-        ]);
+        factory(App\Post::class, 30)->create([
+            'user_id' => null,
+        ])->each(function ($post) {
+            $post->update([
+                'user_id' => rand(1, 10),
+            ]);
+        });
     }
 }
