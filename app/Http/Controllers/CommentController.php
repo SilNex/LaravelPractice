@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use Illuminate\Http\Request;
+use App\Post;
 
 class CommentController extends Controller
 {
     public function create()
     {
-        // return create view
+        dump(request()->route('post'));
     }
 
     public function store(Request $request)
@@ -17,12 +18,21 @@ class CommentController extends Controller
         $attribute = $request->validate([
             'description' => ['required', 'min:10'],
         ]);
-        return ;
+        
+        $attribute += [
+            'user_id' => auth()->id(),
+            'post_id' => request()->route('post'),
+        ];
+
+        $comment = Comment::create($attribute);
+
+        return $comment;
     }
 
     public function show(Comment $comment)
     {
-        //
+        dump($comment->post());
+        return $comment;
     }
 
     public function edit(Comment $comment)

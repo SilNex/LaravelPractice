@@ -26,3 +26,4 @@ Route::get('/profile', 'UserProfileController@show')->name('profile.show');
 Route::put('/profile', 'UserProfileController@update')->name('profile.update');
 Route::delete('/profile', 'UserProfileController@destroy')->name('profile.destroy');
 
+Route::resource('posts/{post}/comments', 'CommentController');
