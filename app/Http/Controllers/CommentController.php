@@ -8,9 +8,16 @@ use App\Post;
 
 class CommentController extends Controller
 {
+    public function index(Request $request)
+    {
+        $comments = Post::find($request->route('post'));
+        dump($comments->comments());
+        return;
+    }
+
     public function create()
     {
-        dump(request()->route('post'));
+        // dump(request()->route('post'));
     }
 
     public function store(Request $request)
