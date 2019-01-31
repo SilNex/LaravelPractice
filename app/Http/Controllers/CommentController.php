@@ -17,10 +17,7 @@ class CommentController extends Controller
     public function index(Request $request)
     {
         $post = Post::findOrFail($request->route('post'));
-        $post->comments()->each(function ($comment) {
-            dump($comment);
-        });
-        return;
+        return $post->comments()->get();
     }
 
     public function create()
