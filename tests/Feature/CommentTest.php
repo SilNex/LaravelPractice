@@ -21,6 +21,7 @@ class CommentTest extends TestCase
         $this->post = factory(Post::class)->create([
             'user_id' => $this->user->id,
         ]);
+        $this->otherUser = factory(User::class)->create();
     }
 
     /** @test */
@@ -53,17 +54,29 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    // public function show_comment_on_the_post_have_password()
-    // {
-    //     $comment = factory(comment::class)->create([
-    //         'user_id' => $this->user->id,
-    //         'post_id' => $this->post->id,
-    //     ]);
-    //     // update password in post
-    //     $this->post->update([
-    //         'password' => Hash::make('test'),
-    //     ]);
-    // }
+    public function show_comment_on_the_post_have_password()
+    {
+        $comment = factory(comment::class)->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ]);
+        $this->post->update([
+            'password' => Hash::make('test'),
+        ]);
+
+        $this->actingAs($this->otherUser)
+            ->get("/posts/{$this->post->id}/comments/$comment->id")
+            ->assertForbidden();
+
+        $this->actingAs($this->otherUser)
+            ->post("/posts/{$this->post->id}/comments/$comment->id", [
+                'password' => 'test',
+            ])->assertOk();
+
+        $this->actingAs($this->user)
+            ->get("/posts/{$this->post->id}/comments/$comment->id")
+            ->assertOk();
+    }
 
     /** @test */
     public function add_comment_valid_password()
@@ -93,14 +106,13 @@ class CommentTest extends TestCase
             'user_id' => $this->user->id,
             'post_id' => $this->post->id,
         ])->toArray();
-        $otherUser = factory(User::class)->create();
         
         $this->post->update([
             'password' => Hash::make('test'),
         ]);
 
         $commentWithPassword = $comment + ['password' => 'wrongPassword'];
-        $this->actingAs($otherUser)->post("/posts/{$this->post->id}/comments", $commentWithPassword)
+        $this->actingAs($this->otherUser)->post("/posts/{$this->post->id}/comments", $commentWithPassword)
             ->assertForbidden();
     }
 }
