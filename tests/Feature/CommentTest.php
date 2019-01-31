@@ -26,8 +26,6 @@ class CommentTest extends TestCase
     /** @test */
     public function add_comment_on_post()
     {
-        $this->withoutExceptionHandling();
-
         $comment = factory(comment::class)->make([
             'user_id' => $this->user->id,
             'post_id' => $this->post->id,
@@ -42,31 +40,67 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function add_comment_on_the_post_have_password()
+    public function show_comment_on_post()
+    {
+        $comment = factory(comment::class)->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ]);
+        // show each comment
+        $this->actingAs($this->user)
+            ->get("/posts/{$this->post->id}/comments/{$comment->id}")
+            ->assertSee($comment->description);
+    }
+
+    /** @test */
+    // public function show_comment_on_the_post_have_password()
+    // {
+    //     $comment = factory(comment::class)->create([
+    //         'user_id' => $this->user->id,
+    //         'post_id' => $this->post->id,
+    //     ]);
+    //     // update password in post
+    //     $this->post->update([
+    //         'password' => Hash::make('test'),
+    //     ]);
+    // }
+
+    /** @test */
+    public function add_comment_valid_password()
     {
         $comment = factory(comment::class)->make([
             'user_id' => $this->user->id,
             'post_id' => $this->post->id,
-        ]);
-        // update password in post
+        ])->toArray();
+        
         $this->post->update([
             'password' => Hash::make('test'),
         ]);
-        // add test without password
-        $response = $this->actingAs($this->user)->post("/posts/{$this->post->id}/comments", $comment->toArray());
-        // check false
-        $response->assertForbidden();
+        $this->actingAs($this->user)
+            ->post("/posts/{$this->post->id}/comments", $comment)
+            ->assertStatus(201);
 
-        // add test with wrong password
-        $commentWithPassword = $comment->toArray() + ['password' => 'wrongPassword'];
-        $response = $this->actingAs($this->user)->post("/posts/{$this->post->id}/comments", $commentWithPassword);
-        // check false
-        $response->assertForbidden();
+        $commentWithPassword = $comment + ['password' => 'test'];
+        $this->actingAs($this->user)
+            ->post("/posts/{$this->post->id}/comments", $commentWithPassword)
+            ->assertStatus(201);
+    }
 
-        // add test with password
-        $commentWithPassword = $comment->toArray() + ['password' => 'test'];
-        $response = $this->actingAs($this->user)->post("/posts/{$this->post->id}/comments", $commentWithPassword);
-        // check true
-        $response->assertStatus(201);
+    /** @test */
+    public function add_comment_invalid_password()
+    {
+        $comment = factory(comment::class)->make([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ])->toArray();
+        $otherUser = factory(User::class)->create();
+        
+        $this->post->update([
+            'password' => Hash::make('test'),
+        ]);
+
+        $commentWithPassword = $comment + ['password' => 'wrongPassword'];
+        $this->actingAs($otherUser)->post("/posts/{$this->post->id}/comments", $commentWithPassword)
+            ->assertForbidden();
     }
 }

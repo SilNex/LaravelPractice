@@ -35,7 +35,7 @@ class Post extends Model
 
     public function vaildatePassword($password)
     {
-        if (!$this->hasPassword() || auth()->id() === $this->user_id) {
+        if (!$this->hasPassword() || auth()->id() === (int)$this->user_id) {
             return true;
         } else {
             return Hash::check($password, $this->password);

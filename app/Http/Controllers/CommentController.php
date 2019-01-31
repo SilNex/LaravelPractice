@@ -10,6 +10,7 @@ class CommentController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth')->only(['store','edit','create']);
         // $this->middleware('passwordHashing')->only(['store']);
     }
 
@@ -29,25 +30,25 @@ class CommentController extends Controller
 
     public function store(Post $post, Request $request)
     {
-        if (!$post->vaildatePassword($request->password)) {
+        if ($post->vaildatePassword($request->password)) {
+            $attribute = $request->validate([
+                'description' => ['required', 'min:10'],
+            ]);
+            
+            $attribute += [
+                'user_id' => auth()->id(),
+                'post_id' => $post->id,
+            ];
+    
+            $comment = Comment::create($attribute);
+    
+            return $comment;
+        } else {
             abort(403);
         }
-
-        $attribute = $request->validate([
-            'description' => ['required', 'min:10'],
-        ]);
-        
-        $attribute += [
-            'user_id' => auth()->id(),
-            'post_id' => $post->id,
-        ];
-
-        $comment = Comment::create($attribute);
-
-        return $comment;
     }
 
-    public function show(Comment $comment)
+    public function show(Post $post, Comment $comment)
     {
         return $comment;
     }

@@ -35,7 +35,7 @@ class PostTest extends TestCase
         $response = $this->actingAs($user)->post('/posts', $post->makeVisible('password')->toArray());
 
         $response->assertRedirect('/posts/1');
-        $this->get('/posts/1')->assertViewIs('posts.passCheck');
+        $this->get('/posts/1')->assertViewIs('posts.show');
     }
 
     /** @test */
