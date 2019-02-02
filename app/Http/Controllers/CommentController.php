@@ -10,7 +10,7 @@ class CommentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only(['store','edit','create']);
+        $this->middleware('auth')->only(['store', 'edit', 'create']);
         // $this->middleware('passwordHashing')->only(['store']);
     }
 
@@ -31,14 +31,14 @@ class CommentController extends Controller
             $attribute = $request->validate([
                 'description' => ['required', 'min:10'],
             ]);
-            
+
             $attribute += [
                 'user_id' => auth()->id(),
                 'post_id' => $post->id,
             ];
-    
+
             $comment = Comment::create($attribute);
-    
+
             return $comment;
         } else {
             abort(403);
@@ -56,13 +56,12 @@ class CommentController extends Controller
 
     public function edit(Comment $comment)
     {
-        
+        return $comment;
     }
 
     public function update(Post $post, Request $request, Comment $comment)
     {
-        if (auth()->id() === (int)$comment->user_id
-            && $post->vaildatePassword($request->password)) {
+        if (auth()->id() === (int)$comment->user_id) {
             $attribute = $request->validate([
                 'description' => ['required', 'min:10'],
             ]);
@@ -75,8 +74,12 @@ class CommentController extends Controller
         }
     }
 
-    public function destroy(Comment $comment)
+    public function destroy(Post $post, Comment $comment)
     {
-        //
+        if (auth()->id() === (int)$comment->user_id) {
+            $comment->delete();
+        } else {
+            abort(403);
+        }
     }
 }

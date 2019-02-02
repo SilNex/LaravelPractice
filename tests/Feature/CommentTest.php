@@ -130,6 +130,7 @@ class CommentTest extends TestCase
         $this->actingAs($this->user)
             ->put("/posts/{$this->post->id}/comments/{$comment->id}", $description)
             ->assertOk();
+        $this->assertDatabaseHas('comments', ['description' => 'updateComment']);
     }
 
     /** @test */
@@ -146,5 +147,34 @@ class CommentTest extends TestCase
 
         $this->actingAs($this->otherUser)->put("/posts/{$this->post->id}/comments/{$comment->id}", $description)
             ->assertForbidden();
+        $this->assertDatabaseMissing('comments', ['description' => 'updateComment']);
+    }
+
+    /** @test */
+    public function delete_comment_valid_user()
+    {
+        $this->withoutExceptionHandling();
+
+        $comment = factory(comment::class)->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ]);
+
+        $this->actingAs($this->user)->delete("/posts/{$this->post->id}/comments/{$comment->id}")
+            ->assertOk();
+        $this->assertDatabaseMissing('comments', $comment->toArray());
+    }
+
+    /** @test */
+    public function delete_comment_invalid_user()
+    {
+        $comment = factory(comment::class)->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ]);
+
+        $this->actingAs($this->otherUser)->delete("/posts/{$this->post->id}/comments/{$comment->id}")
+            ->assertForbidden();
+        $this->assertDatabaseHas('comments', $comment->toArray());
     }
 }
