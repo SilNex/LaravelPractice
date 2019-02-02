@@ -69,9 +69,8 @@ class CommentTest extends TestCase
             ->assertForbidden();
 
         $this->actingAs($this->otherUser)
-            ->post("/posts/{$this->post->id}/comments/$comment->id", [
-                'password' => 'test',
-            ])->assertOk();
+            ->get("/posts/{$this->post->id}/comments/$comment->id?password=test")
+            ->assertOk();
 
         $this->actingAs($this->user)
             ->get("/posts/{$this->post->id}/comments/$comment->id")
@@ -113,6 +112,39 @@ class CommentTest extends TestCase
 
         $commentWithPassword = $comment + ['password' => 'wrongPassword'];
         $this->actingAs($this->otherUser)->post("/posts/{$this->post->id}/comments", $commentWithPassword)
+            ->assertForbidden();
+    }
+    
+    /** @test */
+    public function update_comment_valid_user()
+    {
+        $comment = factory(comment::class)->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ]);
+
+        $description = [
+            'description' => 'updateComment',
+        ];
+
+        $this->actingAs($this->user)
+            ->put("/posts/{$this->post->id}/comments/{$comment->id}", $description)
+            ->assertOk();
+    }
+
+    /** @test */
+    public function update_comment_invalid_user()
+    {
+        $comment = factory(comment::class)->create([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ]);
+
+        $description = [
+            'description' => 'updateComment',
+        ];
+
+        $this->actingAs($this->otherUser)->put("/posts/{$this->post->id}/comments/{$comment->id}", $description)
             ->assertForbidden();
     }
 }

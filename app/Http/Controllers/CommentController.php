@@ -45,19 +45,34 @@ class CommentController extends Controller
         }
     }
 
-    public function show(Post $post, Comment $comment)
+    public function show(Post $post, Request $request, Comment $comment)
     {
-        return $comment;
+        if ($post->vaildatePassword($request->password)) {
+            return $comment;
+        } else {
+            abort(403);
+        }
     }
 
     public function edit(Comment $comment)
     {
-        // return edit view
+        
     }
 
-    public function update(Request $request, Comment $comment)
+    public function update(Post $post, Request $request, Comment $comment)
     {
-        //
+        if (auth()->id() === (int)$comment->user_id
+            && $post->vaildatePassword($request->password)) {
+            $attribute = $request->validate([
+                'description' => ['required', 'min:10'],
+            ]);
+
+            $comment->update($attribute);
+
+            return $comment;
+        } else {
+            abort(403);
+        }
     }
 
     public function destroy(Comment $comment)
