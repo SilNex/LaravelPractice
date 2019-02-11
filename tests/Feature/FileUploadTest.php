@@ -17,8 +17,11 @@ class FileUploadTest extends TestCase
         Storage::fake('test');
     
         $response = $this->put('/fileupload', [
-            'test' => UploadedFile::fake()->image('test.jpg')
+            'test' => $file = UploadedFile::fake()->image('test.jpg')
         ]);
-        dd(UploadedFile::fake()->create('test.php',100));
+
+        dump(Storage::disk('test'));
+
+        Storage::disk('test')->assertExists('test_files', $file->hashName());
     }
 }
