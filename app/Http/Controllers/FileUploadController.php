@@ -15,7 +15,7 @@ class FileUploadController extends Controller
     public function update(Request $request)
     {
         $path = $request->file('test')->store('test_files');
-
+        
         return $path;
     }
 }
