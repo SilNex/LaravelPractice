@@ -3,25 +3,24 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Http\File;
 
 class FileUploadTest extends TestCase
 {
     /** @test */
     public function fileupload_test () {
-        Storage::fake('test');
+        Storage::fake('fake-local');
     
         $response = $this->put('/fileupload', [
             'test' => $file = UploadedFile::fake()->image('test.jpg')
         ]);
 
-        dump(Storage::disk('test'));
+        dump(Storage::disk('fake-local'));
 
-        Storage::disk('test')->assertExists('test_files', $file->hashName());
+        Storage::disk('fake-local')->assertExists('test_files', $file->hashName());
     }
 }
