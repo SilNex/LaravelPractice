@@ -30,3 +30,6 @@ Route::resource('posts/{post}/comments', 'CommentController');
 
 Route::get('/fileupload', 'FileUploadController@index');
 Route::put('/fileupload', 'FileUploadController@update');
+
+Route::get('/images/{image}', 'ImageController@show');
+Route::put('/images', 'ImageController@update');
