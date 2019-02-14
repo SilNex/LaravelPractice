@@ -32,4 +32,5 @@ Route::get('/fileupload', 'FileUploadController@index');
 Route::put('/fileupload', 'FileUploadController@update');
 
 Route::get('/images/{image}', 'ImageController@show');
+Route::get('/images', 'ImageController@index');
 Route::put('/images', 'ImageController@update');

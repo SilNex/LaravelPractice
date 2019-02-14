@@ -8,17 +8,24 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Image;
+use Illuminate\Support\Facades\URL;
 
 class ImageController extends Controller
 {
-    public function index() {
-        dump(Storage::allFiles('test_files'));
+    public function index()
+    {
+        foreach (ImageModel::all() as $index => $image) {
+            echo '<a href="' . URL::current() . '/' . $image->original_name . '">' . $image->original_name . '</a>';
+        }
+        // foreach (Storage::files('images') as $index => $file_path) {
+        //     echo pathinfo($file_path)['basename'].'<br>'.PHP_EOL;
+        // }
     }
 
     public function show(Request $request)
     {
         $image = ImageModel::whereOriginalName($request->image)->firstOrFail();
-        $path = storage_path('app/'.$image->storeage_path);
+        $path = storage_path('app/' . $image->storeage_path);
 
         $img = Image::make($path);
 
