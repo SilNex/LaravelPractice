@@ -25,6 +25,8 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $posts = Post::all();
+        
+        return response()->json($posts);
 
         return view('posts.index', compact('posts'));
     }
