@@ -10,6 +10,7 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
     protected function setUp(): void
     {
@@ -23,5 +24,15 @@ class UserTest extends TestCase
             'email' => $this->user->email,
             'password' => 'password',
         ])->assertRedirect('/home');
+    }
+
+    public function testRegister(): void
+    {
+        $this->post('/register', [
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => 'password',
+            'new-password' => 'password'
+        ])->dump()->assertRedirect('/home');
     }
 }
