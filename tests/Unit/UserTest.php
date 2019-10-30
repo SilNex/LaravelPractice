@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -14,6 +15,7 @@ class UserTest extends TestCase
     public function testCreateUser()
     {
         $user = factory('App\User')->create();
-        $this->assertDatabaseHas('users', $user->toArray());
+        Auth::login($user);
+        $this->assertTrue(Auth::check());
     }
 }
