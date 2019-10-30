@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -32,7 +31,7 @@ class UserTest extends TestCase
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'password' => 'password',
-            'new-password' => 'password'
-        ])->dump()->assertRedirect('/home');
+            'password_confirmation' => 'password'
+        ])->assertRedirect('/home');
     }
 }
