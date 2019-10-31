@@ -10,7 +10,7 @@ class PostTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user = factory('App\User')->create();
@@ -25,5 +25,17 @@ class PostTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('posts', $post->toArray());
+    }
+
+    public function testGetUserPost(): void
+    {
+        $posts = factory('App\Post', 2)->create([
+            'board_id' => $this->board->id,
+            'writer_id' => $this->user->id,
+        ]);
+
+        foreach ($posts as $post) {
+            $this->assertTrue($this->user->posts->contains($post));
+        }
     }
 }
