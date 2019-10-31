@@ -38,4 +38,9 @@ class PostTest extends TestCase
             $this->assertTrue($this->user->posts->contains($post));
         }
     }
+
+    public function testGetBoardPost()
+    {
+        $this->fail('Does not made '.__METHOD__);
+    }
 }
