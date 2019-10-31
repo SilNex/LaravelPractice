@@ -12,7 +12,7 @@ class UserTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testCreateUser()
+    public function testCreateUser(): void
     {
         $user = factory('App\User')->create();
         Auth::login($user);

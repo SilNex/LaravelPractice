@@ -10,7 +10,6 @@ use Tests\TestCase;
 class BoardTest extends TestCase
 {
     use RefreshDatabase;
-    use WithFaker;
 
     public function testCreateBoard(): void
     {
