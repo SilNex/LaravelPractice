@@ -19,6 +19,10 @@ class CommentTest extends TestCase
             'board_id' => $this->board->id,
             'user_id' => $this->user->id,
         ]);
+        $this->comments = factory('App\Comment', 2)->create([
+            'post_id' => $this->post->id,
+            'user_id' => $this->user->id,
+        ]);
     }
 
     public function testCreateComment(): void
@@ -33,6 +37,19 @@ class CommentTest extends TestCase
 
     public function testGetPostComment()
     {
-        $this->fail('Does not made '.__METHOD__);
+        $comments = $this->comments;
+
+        foreach ($comments as $comment) {
+            $this->assertTrue($this->post->comments->contains($comment));
+        }
+    }
+
+    public function testGetUserComment()
+    {
+        $comments = $this->comments;
+
+        foreach ($comments as $comment) {
+            $this->assertTrue($this->user->comments->contains($comment));
+        }
     }
 }
