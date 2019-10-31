@@ -21,7 +21,7 @@ class PostTest extends TestCase
     {
         $post = factory('App\Post')->create([
             'board_id' => $this->board->id,
-            'writer_id' => $this->user->id,
+            'user_id' => $this->user->id,
         ]);
 
         $this->assertDatabaseHas('posts', $post->toArray());
@@ -31,7 +31,7 @@ class PostTest extends TestCase
     {
         $posts = factory('App\Post', 2)->create([
             'board_id' => $this->board->id,
-            'writer_id' => $this->user->id,
+            'user_id' => $this->user->id,
         ]);
 
         foreach ($posts as $post) {

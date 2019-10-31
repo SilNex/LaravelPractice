@@ -17,9 +17,9 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('content');
-            $table->unsignedBigInteger('writer_id')->index('writer');
+            $table->unsignedBigInteger('user_id')->index('writer');
             $table->unsignedBigInteger('board_id')->index('board');
-            $table->foreign('writer_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('board_id')->references('id')->on('boards');
             $table->timestamps();
         });
