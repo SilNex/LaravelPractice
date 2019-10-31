@@ -30,4 +30,9 @@ class CommentTest extends TestCase
 
         $this->assertDatabaseHas('comments', $comment->toArray());
     }
+
+    public function testGetPostComment()
+    {
+        $this->fail('Does not made '.__METHOD__);
+    }
 }
