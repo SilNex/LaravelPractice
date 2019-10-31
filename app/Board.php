@@ -11,4 +11,9 @@ class Board extends Model
     protected $casts = [
         'configs' => 'array'
     ];
+
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
 }

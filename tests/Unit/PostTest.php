@@ -15,6 +15,11 @@ class PostTest extends TestCase
         parent::setUp();
         $this->user = factory('App\User')->create();
         $this->board = factory('App\Board')->create();
+
+        $this->posts = factory('App\Post', 2)->create([
+            'board_id' => $this->board->id,
+            'user_id' => $this->user->id,
+        ]);
     }
 
     public function testCreatePost(): void
@@ -29,10 +34,7 @@ class PostTest extends TestCase
 
     public function testGetUserPost(): void
     {
-        $posts = factory('App\Post', 2)->create([
-            'board_id' => $this->board->id,
-            'user_id' => $this->user->id,
-        ]);
+        $posts = $this->posts;
 
         foreach ($posts as $post) {
             $this->assertTrue($this->user->posts->contains($post));
@@ -41,6 +43,10 @@ class PostTest extends TestCase
 
     public function testGetBoardPost()
     {
-        $this->fail('Does not made '.__METHOD__);
+        $posts = $this->posts;
+
+        foreach ($posts as $post) {
+            $this->assertTrue($this->board->posts->contains($post));
+        }
     }
 }
