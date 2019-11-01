@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Board;
+use App\Http\Requests\StoreBoard;
 use Illuminate\Http\Request;
 
 class BoardController extends Controller
@@ -24,18 +25,21 @@ class BoardController extends Controller
      */
     public function create()
     {
-        //
+        return view('board.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\StoreBoard $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBoard $request)
     {
-        //
+        if ($request->validated()) {
+            dump($request->validated());
+        }
+        // Board::create($validatedData);
     }
 
     /**
