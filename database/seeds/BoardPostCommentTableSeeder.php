@@ -7,6 +7,7 @@ class BoardPostCommentTableSeeder extends Seeder
     public function run()
     {
         $users = factory('App\User', 10)->create();
+        $users[] = factory('App\User')->state('silnex')->create();
         $boards = factory('App\Board', 3)->create();
         $posts = collect([]);
         for ($i=0; $i < 20; $i++) {

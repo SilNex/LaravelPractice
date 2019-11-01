@@ -25,3 +25,11 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+$factory->state(User::class, 'silnex', [
+    'name' => 'silnex',
+    'email' => 'silnex@silnex.kr',
+    'email_verified_at' => now(),
+    'password' => '$2y$10$U864aNx.U/itSaFXGfM5nuPFitJmY/IWGcNx1gbkBaD7i4zeEbOae',
+    'remember_token' => Str::random(10),
+]);
