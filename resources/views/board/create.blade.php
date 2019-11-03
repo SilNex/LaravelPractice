@@ -11,22 +11,34 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Board Name</label>
                             <div class="col-md-6">
-                                <input type="text" id="name" name="name" placeholder="Board Name" class="form-control">
+                                <input type="text" id="name" name="name" placeholder="Board Name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="display_name" class="col-md-4 col-form-label text-md-right">Display Name
-                                (option)</label>
+                            <label for="display_name" class="col-md-4 col-form-label text-md-right">Display Name (option)</label>
                             <div class="col-md-6">
-                                <input type="text" id="display_name" name="display_name" placeholder="Display Name"
-                                    class="form-control">
+                                <input type="text" id="display_name" name="display_name" placeholder="Display Name" class="form-control @error('display_name') is-invalid @enderror" value="{{ old('display_name') }}">
+                                @error('display_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="explain" class="col-md-4 col-form-label text-md-right">Explain (option)</label>
                             <div class="col-md-6">
-                                <textarea type="text" id="explain" name="explain" placeholder="Board Explain"
-                                    class="form-control" rows="3"></textarea>
+                                <textarea type="text" id="explain" name="explain" placeholder="Board Explain" class="form-control @error('explain') is-invalid @enderror" rows="3">{{ old('explain') }}</textarea>
+                                @error('explain')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row mb-0">
@@ -35,9 +47,6 @@
                                 </button>
                             </div>
                     </form>
-                    @error('name')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
         </div>
