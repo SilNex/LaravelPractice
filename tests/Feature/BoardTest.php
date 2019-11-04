@@ -13,13 +13,13 @@ class BoardTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = factory('App\User')->create();
+        // $this->user = factory('App\User')->create();
         $this->board = factory('App\Board')->create();
     }
 
     public function testCreateBoard(): void
     {
-        $this->actingAs($this->user)->post('/board', [
+        $this->post('/board', [
             'name' => 'free',
             'display_name' => '자유게시판',
         ])->assertCreated()->assertRedirect('/board/free');
