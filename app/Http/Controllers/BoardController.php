@@ -36,9 +36,8 @@ class BoardController extends Controller
      */
     public function store(StoreBoard $request)
     {
-        if (Board::create($request->validated())) {
-            return redirect('/board', 302);
-        }
+        return Board::create($request->validated())
+            ? redirect('/board/create') : redirect('/board/create');
     }
 
     /**

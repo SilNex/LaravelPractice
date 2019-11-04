@@ -19,10 +19,12 @@ class BoardTest extends TestCase
 
     public function testCreateBoard(): void
     {
-        $this->post('/board', [
+        $board = [
             'name' => 'free',
             'display_name' => '자유게시판',
-        ])->assertCreated()->assertRedirect('/board/free');
+        ];
+        $this->post('/board', $board)->dump()->assertRedirect('/board');
+        $this->assertDatabaseHas('boards', $board);
     }
 
     public function testToLongBoardName(): void
