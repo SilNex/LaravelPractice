@@ -31,7 +31,7 @@ class BoardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\StoreBoard $request
+     * @param  \App\Http\Requests\StoreBoard $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreBoard $request)

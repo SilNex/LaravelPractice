@@ -25,7 +25,7 @@ class StoreBoard extends FormRequest
     {
         return [
             'name' => ['required', 'unique:boards', 'min:5', 'max:255'],
-            'display_name' => ['min:5', 'max:255'],
+            'display_name' => ['nullable', 'sometimes', 'min:1', 'max:255'],
             'explain' => ['max:1024'],
         ];
     }
