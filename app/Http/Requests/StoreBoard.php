@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBoard extends FormRequest
 {
-    protected $redirect = '/home';
+    protected $redirect = '/';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class StoreBoard extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'unique:boards', 'min:5', 'max:255'],
+            'name' => ['required', 'unique:boards', 'min:3', 'max:255'],
             'display_name' => ['nullable', 'sometimes', 'min:1', 'max:255'],
             'explain' => ['max:1024'],
         ];

@@ -41,10 +41,9 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">create</button>
-                            </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">create</button>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -15,7 +15,9 @@ class BoardController extends Controller
      */
     public function index()
     {
-        //
+        return view('board.index', [
+            'boards' => Board::all(),
+        ]);
     }
 
     /**
@@ -37,7 +39,7 @@ class BoardController extends Controller
     public function store(StoreBoard $request)
     {
         return Board::create($request->validated())
-            ? redirect('/board/create') : redirect('/board/create');
+            ? redirect('/board') : redirect('/board/create');
     }
 
     /**
