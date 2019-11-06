@@ -37,6 +37,14 @@ class BoardTest extends TestCase
         $this->assertDatabaseHas('boards', $board);
     }
 
+    public function testReadBoard(): void
+    {
+        $board = $this->board;
+
+        $this->get("/board/{$board->id}")
+            ->assertViewHas('board', $board);
+    }
+
     public function testToLongBoardName(): void
     {
         $this->post('/board', [
