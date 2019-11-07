@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Board;
 use App\Http\Requests\StoreBoard;
+use App\Http\Requests\UpdateBoard;
 use Illuminate\Http\Request;
 
 class BoardController extends Controller
@@ -38,8 +39,8 @@ class BoardController extends Controller
      */
     public function store(StoreBoard $request)
     {
-        return Board::create($request->validated())
-            ? redirect('/board') : redirect('/board/create');
+        $board = Board::create($request->validated());
+        return $board ? redirect(route('board.show', $board->id)) : redirect(route('board.create'));
     }
 
     /**
@@ -61,19 +62,20 @@ class BoardController extends Controller
      */
     public function edit(Board $board)
     {
-        //
+        return view('board.edit', $board);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpdateBoard  $request
      * @param  \App\Board  $board
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Board $board)
+    public function update(UpdateBoard $request, Board $board)
     {
-        //
+        $board->update($request->validated())
+            ? redirect(route('board.show', $board->id)) : redirect(route('board.edit', $board->id));
     }
 
     /**

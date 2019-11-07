@@ -42,7 +42,7 @@ class BoardTest extends TestCase
         $board = $this->board;
 
         $this->get("/board/{$board->id}")
-            ->assertViewHas('board', $board);
+            ->assertViewHas('boards', $board);
     }
 
     public function testToLongBoardName(): void
