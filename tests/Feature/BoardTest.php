@@ -42,13 +42,41 @@ class BoardTest extends TestCase
         $board = $this->board;
 
         $this->get("/board/{$board->id}")
-            ->assertViewHas('boards', $board);
+            ->assertViewHasAll($board->toArray());
+    }
+
+    public function testUpdateBoard(): void
+    {
+        $board = $this->board;
+        $board['display_name'] = 'Foo';
+
+        $this->put("/board/{$board->id}", $board->toArray())
+            ->assertRedirect("/board/{$board->id}");
+        $this->assertDatabaseHas('boards', $board->toArray());
+    }
+
+    public function testCanNotUpdateBoardName(): void
+    {
+        $board = $this->board;
+        $boardArray = $this->board->toArray();
+        $boardArray['name'] = 'Foo';
+        $this->put("/board/{$board->id}", $boardArray)
+            ->assertRedirect("/board/{$board->id}/edit");
+        $this->assertDatabaseHas('boards', $board->toArray());
     }
 
     public function testToLongBoardName(): void
     {
         $this->post('/board', [
-                'name' => str_repeat('A',256)
-            ])->assertSessionHasErrors(['name']);
+            'name' => str_repeat('A', 256)
+        ])->assertSessionHasErrors(['name']);
+    }
+
+    public function testDeleteBoard(): void
+    {
+        $board = $this->board;
+        $this->delete("/board/{$board->id}")
+            ->assertRedirect('/board');
+        $this->assertDatabaseMissing('boards', $board->toArray());
     }
 }

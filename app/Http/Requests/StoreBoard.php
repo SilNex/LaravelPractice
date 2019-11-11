@@ -6,8 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBoard extends FormRequest
 {
-    protected $redirect = '/';
-
     /**
      * Determine if the user is authorized to make this request.
      *
