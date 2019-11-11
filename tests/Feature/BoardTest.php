@@ -76,7 +76,7 @@ class BoardTest extends TestCase
     {
         $board = $this->board;
         $this->delete("/board/{$board->id}")
-            ->assertRedirect('/board');
+            ->assertSuccessful();
         $this->assertDatabaseMissing('boards', $board->toArray());
     }
 }

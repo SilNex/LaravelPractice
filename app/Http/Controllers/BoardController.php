@@ -74,8 +74,10 @@ class BoardController extends Controller
      */
     public function update(UpdateBoard $request, Board $board)
     {
-        return ($board->update($request->validated()) && (isset($request->name) ? $request->name === $board->name : true))
-            ? redirect(route('board.show', $board->id)) : redirect(route('board.edit', $board->id));
+        return ($board->update($request->validated())
+            && (isset($request->name) ? $request->name === $board->name : true))
+            ? redirect()->route('board.show', $board->id, 301)
+            : redirect()->route('board.edit', $board->id);
     }
 
     /**
@@ -87,7 +89,6 @@ class BoardController extends Controller
     public function destroy(Board $board)
     {
         $board->delete();
-
-        return redirect(route('board.index'));
+        return response('', 204);
     }
 }

@@ -49497,10 +49497,12 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-console.log("Load modal.js");
-
 window.delete_request = function () {
-  axios["delete"](window.location.pathname.replace('/edit', ''));
+  axios["delete"](window.location.pathname.replace('/edit', '')).then(function (response) {
+    if (response.status === 204) {
+      window.location.href = window.location.origin + '/board';
+    }
+  });
 };
 
 /***/ }),
