@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">Board Info</div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $display_name ?? $name }}</h5>
+                    <h5 class="card-title">{{ $display_name . " - {$name}" ?? $name }}</h5>
                     <p class="card-text">{{ $explain }}</p>
 
                     <div class="text-right mt-2">
