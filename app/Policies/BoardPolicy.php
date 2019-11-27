@@ -48,7 +48,7 @@ class BoardPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('Admin');
+        //
     }
 
     /**
