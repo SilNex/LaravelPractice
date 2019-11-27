@@ -82,4 +82,32 @@ class BoardTest extends TestCase
             ->assertSuccessful();
         $this->assertDatabaseMissing('boards', $board->toArray());
     }
+
+    /** @test */
+    public function testForbiddenRequest()
+    {
+        $user = factory('App\User')->create();
+
+        // Get board list forbidden
+        $this->actingAs($user)->get('/board')
+            ->assertForbidden();
+
+        // Create board forbidden
+        $board = [
+            'name' => 'free',
+            'display_name' => '자유게시판',
+        ];
+        $this->actingAs($user)->post('/board', $board)
+            ->assertForbidden();
+
+        // Update board forbidden
+        $board = $this->board;
+        $board['display_name'] = 'Foo';
+        $this->actingAs($user)->put("/board/{$board->id}", $board->toArray())
+            ->assertForbidden();
+
+        $board = $this->board;
+        $this->actingAs($user)->delete("/board/{$board->id}")
+            ->assertForbidden();
+    }
 }
