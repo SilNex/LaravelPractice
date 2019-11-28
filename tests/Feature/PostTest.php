@@ -34,8 +34,8 @@ class PostTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $this->actingAs($this->user)->get('/post')
-            ->assertViewHas('posts', Post::all());
+        $this->actingAs($this->user)->get("/{$this->board->name}/post")
+            ->assertViewHas('posts', $this->board->posts);
     }
 
     /** @test */
