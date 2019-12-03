@@ -12,7 +12,7 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->board = null;
+        $this->authorizeResource(Post::class, 'post');
     }
 
     /**
@@ -20,7 +20,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($board)
+    public function index(string $board)
     {
         $this->board = Board::where('name', $board)->first();
         if (!$this->board) {
