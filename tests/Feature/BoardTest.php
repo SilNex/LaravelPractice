@@ -25,7 +25,7 @@ class BoardTest extends TestCase
     {
         factory('App\Board', 5)->create();
 
-        $this->actingAs($this->user)->get('/board')
+        $this->actingAs($this->user)->get('/boards')
             ->assertViewHas('boards', Board::all());
     }
 
@@ -35,8 +35,8 @@ class BoardTest extends TestCase
             'name' => 'free',
             'display_name' => '자유게시판',
         ];
-        $this->actingAs($this->user)->post('/board', $board)
-            ->assertRedirect('/board');
+        $this->actingAs($this->user)->post('/boards', $board)
+            ->assertRedirect('/boards');
         $this->assertDatabaseHas('boards', $board);
     }
 
@@ -70,7 +70,7 @@ class BoardTest extends TestCase
 
     public function testToLongBoardName(): void
     {
-        $this->actingAs($this->user)->post('/board', [
+        $this->actingAs($this->user)->post('/boards', [
             'name' => str_repeat('A', 256)
         ])->assertSessionHasErrors(['name']);
     }
@@ -89,7 +89,7 @@ class BoardTest extends TestCase
         $user = factory('App\User')->create();
 
         // Get board list forbidden
-        $this->actingAs($user)->get('/board')
+        $this->actingAs($user)->get('/boards')
             ->assertForbidden();
 
         // Create board forbidden
@@ -97,7 +97,7 @@ class BoardTest extends TestCase
             'name' => 'free',
             'display_name' => '자유게시판',
         ];
-        $this->actingAs($user)->post('/board', $board)
+        $this->actingAs($user)->post('/boards', $board)
             ->assertForbidden();
 
         // Update board forbidden

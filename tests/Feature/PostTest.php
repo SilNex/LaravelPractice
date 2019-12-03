@@ -34,7 +34,7 @@ class PostTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $this->actingAs($this->user)->get("{$this->board->name}/post")
+        $this->actingAs($this->user)->get("{$this->board->name}/posts")
             ->assertViewHas('posts', $this->board->posts);
     }
 
@@ -44,7 +44,7 @@ class PostTest extends TestCase
         $user = factory('App\User')->create();
 
         // Get post list forbidden
-        $this->actingAs($user)->get("{$this->board->name}/post")
+        $this->actingAs($user)->get("{$this->board->name}/posts")
             ->assertForbidden();
 
         // Create post forbidden
@@ -52,7 +52,7 @@ class PostTest extends TestCase
             'name' => 'free',
             'display_name' => '자유게시판',
         ];
-        $this->actingAs($user)->post("{$this->board->name}/post", $post)
+        $this->actingAs($user)->post("{$this->board->name}/posts", $post)
             ->assertForbidden();
 
         // Update post forbidden
