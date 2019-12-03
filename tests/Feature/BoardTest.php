@@ -21,7 +21,7 @@ class BoardTest extends TestCase
         $this->board = factory('App\Board')->create();
     }
 
-    public function testGetBoards(): void
+    public function testGetBoardsList(): void
     {
         factory('App\Board', 5)->create();
 
