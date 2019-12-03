@@ -16,4 +16,9 @@ class Board extends Model
     {
         return $this->hasMany('App\Post');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
 }

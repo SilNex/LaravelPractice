@@ -20,16 +20,15 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(string $board)
+    public function index(Board $board)
     {
-        $this->board = Board::where('name', $board)->first();
-        if (!$this->board) {
+        if (!$board) {
             abort(404);
         }
 
         return view('post.index', [
-            'posts' => $this->board->posts,
-            'board' => $this->board->name,
+            'posts' => $board->posts,
+            'board' => $board->name,
         ]);
     }
 

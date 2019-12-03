@@ -44,7 +44,7 @@ class BoardTest extends TestCase
     {
         $board = $this->board;
 
-        $this->actingAs($this->user)->get("/board/{$board->id}")
+        $this->actingAs($this->user)->get("/boards/{$board->name}")
             ->assertViewHasAll($board->toArray());
     }
 
@@ -53,8 +53,8 @@ class BoardTest extends TestCase
         $board = $this->board;
         $board['display_name'] = 'Foo';
 
-        $this->actingAs($this->user)->put("/board/{$board->id}", $board->toArray())
-            ->assertRedirect("/board/{$board->id}");
+        $this->actingAs($this->user)->put("/boards/{$board->name}", $board->toArray())
+            ->assertRedirect("/boards/{$board->name}");
         $this->assertDatabaseHas('boards', $board->toArray());
     }
 
@@ -63,8 +63,8 @@ class BoardTest extends TestCase
         $board = $this->board;
         $boardArray = $this->board->toArray();
         $boardArray['name'] = 'Foo';
-        $this->actingAs($this->user)->put("/board/{$board->id}", $boardArray)
-            ->assertRedirect("/board/{$board->id}/edit");
+        $this->actingAs($this->user)->put("/boards/{$board->name}", $boardArray)
+            ->assertRedirect("/boards/{$board->name}/edit");
         $this->assertDatabaseHas('boards', $board->toArray());
     }
 
@@ -78,7 +78,7 @@ class BoardTest extends TestCase
     public function testDeleteBoard(): void
     {
         $board = $this->board;
-        $this->actingAs($this->user)->delete("/board/{$board->id}")
+        $this->actingAs($this->user)->delete("/boards/{$board->name}")
             ->assertSuccessful();
         $this->assertDatabaseMissing('boards', $board->toArray());
     }
@@ -103,11 +103,11 @@ class BoardTest extends TestCase
         // Update board forbidden
         $board = $this->board;
         $board['display_name'] = 'Foo';
-        $this->actingAs($user)->put("/board/{$board->id}", $board->toArray())
+        $this->actingAs($user)->put("/boards/{$board->name}", $board->toArray())
             ->assertForbidden();
 
         $board = $this->board;
-        $this->actingAs($user)->delete("/board/{$board->id}")
+        $this->actingAs($user)->delete("/boards/{$board->name}")
             ->assertForbidden();
     }
 }

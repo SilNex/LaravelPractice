@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">Board Info</div>
                 <div class="card-body">
-                    <form method="POST" action="{{route('board.update', $id)}}">
+                    <form method="POST" action="{{route('boards.update', $name)}}">
                         @csrf
                         @method("PUT")
                         <div class="form-group row">
