@@ -17,7 +17,7 @@ class PostTest extends TestCase
         parent::setUp();
         $this->user = factory('App\User')->create();
         $this->board = factory('App\Board')->create();
-        $permission = Permission::create(['name' => "{$this->board->name} writable"]);
+        $permission = Permission::create(['name' => "{$this->board->name} use"]);
         $this->user->givePermissionTo($permission);
 
         $this->posts = factory('App\Post')->create([
@@ -34,7 +34,7 @@ class PostTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $this->actingAs($this->user)->get("/{$this->board->name}/post")
+        $this->actingAs($this->user)->get("{$this->board->name}/post")
             ->assertViewHas('posts', $this->board->posts);
     }
 
