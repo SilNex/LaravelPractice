@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Board;
+use Spatie\Permission\Models\Permission;
 
 class BoardObserver
 {
@@ -14,7 +15,9 @@ class BoardObserver
      */
     public function created(Board $board)
     {
-        //
+        Permission::create([
+            'name' => "{$board->name} use",
+        ]);
     }
 
     /**
@@ -36,7 +39,7 @@ class BoardObserver
      */
     public function deleted(Board $board)
     {
-        //
+        Permission::whereName("{$board->name} use")->delete();
     }
 
     /**
