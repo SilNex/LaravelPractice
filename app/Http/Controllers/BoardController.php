@@ -46,7 +46,7 @@ class BoardController extends Controller
     public function store(StoreBoard $request)
     {
         $board = Board::create($request->validated());
-        return $board ? redirect(route('board.index')) : redirect(route('board.create'));
+        return $board ? redirect(route('boards.index')) : redirect(route('boards.create'));
     }
 
     /**
@@ -82,8 +82,8 @@ class BoardController extends Controller
     {
         return ($board->update($request->validated())
             && (isset($request->name) ? $request->name === $board->name : true))
-            ? redirect()->route('board.show', $board->id, 301)
-            : redirect()->route('board.edit', $board->id);
+            ? redirect()->route('boards.show', $board->name, 301)
+            : redirect()->route('boards.edit', $board->name);
     }
 
     /**

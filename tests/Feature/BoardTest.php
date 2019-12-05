@@ -25,7 +25,7 @@ class BoardTest extends TestCase
     {
         factory('App\Board', 5)->create();
 
-        $this->actingAs($this->user)->get('/board')
+        $this->actingAs($this->user)->get('/boards')
             ->assertViewHas('boards', Board::all());
     }
 
@@ -35,8 +35,8 @@ class BoardTest extends TestCase
             'name' => 'free',
             'display_name' => '자유게시판',
         ];
-        $this->actingAs($this->user)->post('/board', $board)
-            ->assertRedirect('/board');
+        $this->actingAs($this->user)->post('/boards', $board)
+            ->assertRedirect('/boards');
         $this->assertDatabaseHas('boards', $board);
     }
 
@@ -44,7 +44,7 @@ class BoardTest extends TestCase
     {
         $board = $this->board;
 
-        $this->actingAs($this->user)->get("/board/{$board->id}")
+        $this->actingAs($this->user)->get("/boards/{$board->name}")
             ->assertViewHasAll($board->toArray());
     }
 
@@ -53,8 +53,8 @@ class BoardTest extends TestCase
         $board = $this->board;
         $board['display_name'] = 'Foo';
 
-        $this->actingAs($this->user)->put("/board/{$board->id}", $board->toArray())
-            ->assertRedirect("/board/{$board->id}");
+        $this->actingAs($this->user)->put("/boards/{$board->name}", $board->toArray())
+            ->assertRedirect("/boards/{$board->name}");
         $this->assertDatabaseHas('boards', $board->toArray());
     }
 
@@ -63,14 +63,14 @@ class BoardTest extends TestCase
         $board = $this->board;
         $boardArray = $this->board->toArray();
         $boardArray['name'] = 'Foo';
-        $this->actingAs($this->user)->put("/board/{$board->id}", $boardArray)
-            ->assertRedirect("/board/{$board->id}/edit");
+        $this->actingAs($this->user)->put("/boards/{$board->name}", $boardArray)
+            ->assertRedirect("/boards/{$board->name}/edit");
         $this->assertDatabaseHas('boards', $board->toArray());
     }
 
     public function testToLongBoardName(): void
     {
-        $this->actingAs($this->user)->post('/board', [
+        $this->actingAs($this->user)->post('/boards', [
             'name' => str_repeat('A', 256)
         ])->assertSessionHasErrors(['name']);
     }
@@ -78,7 +78,7 @@ class BoardTest extends TestCase
     public function testDeleteBoard(): void
     {
         $board = $this->board;
-        $this->actingAs($this->user)->delete("/board/{$board->id}")
+        $this->actingAs($this->user)->delete("/boards/{$board->name}")
             ->assertSuccessful();
         $this->assertDatabaseMissing('boards', $board->toArray());
     }
@@ -89,7 +89,7 @@ class BoardTest extends TestCase
         $user = factory('App\User')->create();
 
         // Get board list forbidden
-        $this->actingAs($user)->get('/board')
+        $this->actingAs($user)->get('/boards')
             ->assertForbidden();
 
         // Create board forbidden
@@ -97,17 +97,17 @@ class BoardTest extends TestCase
             'name' => 'free',
             'display_name' => '자유게시판',
         ];
-        $this->actingAs($user)->post('/board', $board)
+        $this->actingAs($user)->post('/boards', $board)
             ->assertForbidden();
 
         // Update board forbidden
         $board = $this->board;
         $board['display_name'] = 'Foo';
-        $this->actingAs($user)->put("/board/{$board->id}", $board->toArray())
+        $this->actingAs($user)->put("/boards/{$board->name}", $board->toArray())
             ->assertForbidden();
 
         $board = $this->board;
-        $this->actingAs($user)->delete("/board/{$board->id}")
+        $this->actingAs($user)->delete("/boards/{$board->name}")
             ->assertForbidden();
     }
 }

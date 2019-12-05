@@ -12,8 +12,8 @@
 
                     <div class="text-right mt-2">
                         <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteModal" role="button">Delete</button>
-                        <a href="{{ route('board.index') }}" class="btn btn-secondary">List</a>
-                        <a href="{{ route('board.edit', $id) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('boards.index') }}" class="btn btn-secondary">List</a>
+                        <a href="{{ route('boards.edit', $name) }}" class="btn btn-primary">Edit</a>
                     </div>
                 </div>
             </div>
