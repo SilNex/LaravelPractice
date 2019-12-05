@@ -38,6 +38,17 @@ class PostTest extends TestCase
             ->assertViewHas('posts', $this->board->posts);
     }
 
+    public function testCreatePost(): void
+    {
+        $post = factory('App\Post')->make([
+            'board_id' => $this->board->id,
+            'user_id' => $this->user->id,
+        ]);
+        $this->actingAs($this->user)->post("{$this->board->name}/post", compact('post'))
+            ->assertRedirect('/post');
+        $this->assertDatabaseHas('posts', compact('post'));
+    }
+
     /** @test */
     public function testForbiddenRequest()
     {
@@ -56,12 +67,12 @@ class PostTest extends TestCase
             ->assertForbidden();
 
         // Update post forbidden
-        // $post = $this->post;
-        // $this->actingAs($user)->put("{$this->board->name}/post/{$post->id}", $post->toArray())
-        //     ->assertForbidden();
+        $post = $this->post;
+        $this->actingAs($user)->put("{$this->board->name}/post/{$post->id}", $post->toArray())
+            ->assertForbidden();
 
         // $post = $this->post;
-        // $this->actingAs($user)->delete("{$this->board->name}/post/{$post->id}")
-        //     ->assertForbidden();
+        $this->actingAs($user)->delete("{$this->board->name}/post/{$post->id}")
+            ->assertForbidden();
     }
 }
