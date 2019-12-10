@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Board;
+use App\Http\Requests\StorePost;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -45,12 +46,13 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StorePost  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Board $board, Request $request)
+    public function store(Board $board, StorePost $request)
     {
-        dump($board->name, $request->all());
+        $post = Post::create(array_merge($request->validated(), ['board_id' => $board->id, 'user_id' => auth()->user()->id]));
+        return $post ? redirect(route('posts.index', $board->name)) : redirect(route('posts.create', $board->name));
     }
 
     /**
@@ -72,19 +74,19 @@ class PostController extends Controller
      */
     public function edit(Board $board, Post $post)
     {
-        //
+        return view('post.edit', compact(['board', 'post']));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StorePost  $request
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Board $board, Request $request, Post $post)
+    public function update(Board $board, StorePost $request, Post $post)
     {
-        //
+        return $post->update($request->validated()) ? redirect(route('posts.show', [$board->name, $post->id])) : back();
     }
 
     /**
@@ -95,6 +97,9 @@ class PostController extends Controller
      */
     public function destroy(Board $board, Post $post)
     {
-        //
+        $post->delete();
+        return response()->json([
+            'redirect' => route('posts.index', $board->name),
+        ]);
     }
 }

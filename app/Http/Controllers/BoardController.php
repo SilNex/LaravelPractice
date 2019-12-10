@@ -95,6 +95,8 @@ class BoardController extends Controller
     public function destroy(Board $board)
     {
         $board->delete();
-        return response('', 204);
+        return response()->json([
+            'redirect' => route('board.index'),
+        ]);
     }
 }

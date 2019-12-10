@@ -38,10 +38,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        $board = $post->board;
-        if ($user->can("{$board->name} read post")) {
-            return true;
-        }
+        //
     }
 
     /**
