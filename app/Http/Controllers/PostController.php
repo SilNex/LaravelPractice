@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Board;
 use App\Http\Requests\StorePost;
 use App\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -26,11 +24,8 @@ class PostController extends Controller
         if (!$board) {
             abort(404);
         }
-
-        return view('post.index', [
-            'posts' => $board->posts,
-            'board' => $board->name,
-        ]);
+        $posts = $board->posts;
+        return view('post.index', compact(['board', 'posts']));
     }
 
     /**
