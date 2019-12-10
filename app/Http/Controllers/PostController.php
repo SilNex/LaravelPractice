@@ -37,9 +37,9 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($board)
+    public function create(Board $board)
     {
-
+        return view('post.create', compact('board'));
     }
 
     /**
@@ -48,9 +48,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Board $board, Request $request)
     {
-        //
+        dump($board->name, $request->all());
     }
 
     /**
@@ -59,9 +59,9 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Board $board, Post $post)
     {
-        //
+        return view('post.show', compact(['board', 'post']));
     }
 
     /**
@@ -70,7 +70,7 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Board $board, Post $post)
     {
         //
     }
@@ -82,7 +82,7 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Board $board, Request $request, Post $post)
     {
         //
     }
@@ -93,7 +93,7 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Board $board, Post $post)
     {
         //
     }

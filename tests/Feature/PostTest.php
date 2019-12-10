@@ -45,7 +45,7 @@ class PostTest extends TestCase
             'user_id' => $this->user->id,
         ]);
         $this->actingAs($this->user)->post("{$this->board->name}/post", compact('post'))
-            ->assertRedirect('/post');
+            ->assertRedirect("{$this->board->name}/post");
         $this->assertDatabaseHas('posts', compact('post'));
     }
 
