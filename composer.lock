@@ -3018,7 +3018,7 @@
                     "TijsVerkoyen\\CssToInlineStyles\\": "src"
                 }
             },
-            "notification-url": "https://repo.packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -3120,7 +3120,7 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3228,7 +3228,7 @@
                     "Codedungeon\\PHPCliColors\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3280,7 +3280,7 @@
                     "Codedungeon\\PHPUnitPrettyResultPrinter\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3715,7 +3715,7 @@
                     "Noodlehaus\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5353,7 +5353,7 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
