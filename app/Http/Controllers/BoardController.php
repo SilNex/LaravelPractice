@@ -96,7 +96,7 @@ class BoardController extends Controller
     {
         $board->delete();
         return response()->json([
-            'redirect' => route('board.index'),
+            'redirect' => route('boards.index'),
         ]);
     }
 }

@@ -20,7 +20,7 @@ class PostTest extends TestCase
         $permission = Permission::create(['name' => "{$this->board->name} use"]);
         $this->user->givePermissionTo($permission);
 
-        $this->posts = factory('App\Post')->create([
+        $this->post = factory('App\Post')->create([
             'board_id' => $this->board->id,
             'user_id' => $this->user->id,
         ]);
@@ -40,13 +40,10 @@ class PostTest extends TestCase
 
     public function testCreatePost(): void
     {
-        $post = factory('App\Post')->make([
-            'board_id' => $this->board->id,
-            'user_id' => $this->user->id,
-        ]);
-        $this->actingAs($this->user)->post("{$this->board->name}/post", compact('post'))
-            ->assertRedirect("{$this->board->name}/post");
-        $this->assertDatabaseHas('posts', compact('post'));
+        $post = factory('App\Post')->make()->toArray();
+        $this->actingAs($this->user)->post("{$this->board->name}/posts", $post)
+            ->assertRedirect("{$this->board->name}/posts");
+        $this->assertDatabaseHas('posts', $post);
     }
 
     /** @test */
@@ -68,11 +65,11 @@ class PostTest extends TestCase
 
         // Update post forbidden
         $post = $this->post;
-        $this->actingAs($user)->put("{$this->board->name}/post/{$post->id}", $post->toArray())
+        $this->actingAs($user)->put("{$this->board->name}/posts/{$post->id}", $post->toArray())
             ->assertForbidden();
 
         // $post = $this->post;
-        $this->actingAs($user)->delete("{$this->board->name}/post/{$post->id}")
+        $this->actingAs($user)->delete("{$this->board->name}/posts/{$post->id}")
             ->assertForbidden();
     }
 }
