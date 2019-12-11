@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->authorizeResource(Comment::class, 'comment');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
