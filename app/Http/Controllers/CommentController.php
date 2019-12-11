@@ -3,61 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Http\Requests\StoreComment;
+use App\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Post $post, StoreComment $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
+        $comment = Comment::create(array_merge($request->validated(), [
+            'post_id' => $post->id,
+            'user_id' => auth()->user()->id,
+        ]));
+        $lastPage = $post->comments()->paginate(10)->lastPage();
+        return ($comment ? redirect("/{$post->board->name}/posts/{$post->id}?page={$lastPage}") : back());
     }
 
     /**

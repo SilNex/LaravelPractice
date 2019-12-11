@@ -58,7 +58,8 @@ class PostController extends Controller
      */
     public function show(Board $board, Post $post)
     {
-        return view('post.show', compact(['board', 'post']));
+        $comments = $post->comments()->simplePaginate(10);
+        return view('post.show', compact(['board', 'post', 'comments']));
     }
 
     /**
