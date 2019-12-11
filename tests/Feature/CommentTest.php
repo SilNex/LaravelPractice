@@ -33,4 +33,15 @@ class CommentTest extends TestCase
         $this->actingAs($this->user)->get("/{$this->board->name}/posts/{$this->post->id}")
             ->assertViewHas('comments', $this->post->comments);
     }
+
+    public function testCreateComment(): void
+    {
+        $comment = factory('App\Comment')->make([
+            'user_id' => $this->user->id,
+            'post_id' => $this->post->id,
+        ])->toArray();
+        $this->actingAs($this->user)->post("/{$this->board->name}/posts", $comment)
+            ->assertRedirect("/{$this->board->name}/posts/{$this->post->id}");
+        $this->assertDatabaseHas('comments', $comment);
+    }
 }
