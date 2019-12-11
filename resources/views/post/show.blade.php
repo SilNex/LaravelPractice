@@ -32,6 +32,9 @@
                         </span>
                         @enderror
                     </form>
+                    <div class="mt-4 d-flex justify-content-center">
+                        {{ $comments->links() }}
+                    </div>
                     @foreach ($comments as $coment)
                     <div class="border m-2 p-2">
                         {{ $coment->content }}
