@@ -20,11 +20,12 @@
                 <div>
                     <label for="Comment" class="m-2">Comment</label>
                     <form action="{{ route('comments.store', $post->id) }}" method="post" class="d-flex">
+                        @csrf
                         <textarea name="content" id="Comment"  rows="5"
                             class="form-control border ml-2 @error('content') is-invalid @enderror" placeholder="Comment">
                             {{ old('content') }}
                         </textarea>
-                        <button type="button" class="btn btn-secondary mr-2">comment</button>
+                        <button type="submit" class="btn btn-secondary mr-2">comment</button>
                         @error('content')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
