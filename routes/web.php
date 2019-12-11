@@ -21,4 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/{board}/posts', 'PostController');
 
+Route::post('/posts/{post}/comments', 'CommentController@store')->name('comments.store');
+
 Route::resource('/boards', 'BoardController');
+
