@@ -60,6 +60,7 @@ class PostTest extends TestCase
         ]);
         $this->actingAs($this->user)->delete("{$this->board->name}/posts/{$this->post->id}")
             ->assertForbidden();
+
         $this->assertDatabaseHas('posts', $this->post->toArray());
     }
 
