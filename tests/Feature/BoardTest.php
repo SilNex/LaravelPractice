@@ -80,7 +80,7 @@ class BoardTest extends TestCase
         $board = $this->board;
         $this->actingAs($this->user)->delete("/boards/{$board->name}")
             ->assertSuccessful();
-        $this->assertDatabaseMissing('boards', $board->toArray());
+        $this->assertDeleted('boards', $board->toArray());
     }
 
     /** @test */
