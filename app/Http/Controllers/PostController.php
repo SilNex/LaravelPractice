@@ -58,6 +58,9 @@ class PostController extends Controller
      */
     public function show(Board $board, Post $post)
     {
+        if ($post->board->isNot($board)) {
+            abort(404);
+        }
         $comments = $post->comments()->with('user')->simplePaginate(10);
         return view('post.show', compact(['board', 'post', 'comments']));
     }
