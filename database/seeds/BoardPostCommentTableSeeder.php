@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 
 class BoardPostCommentTableSeeder extends Seeder
 {
