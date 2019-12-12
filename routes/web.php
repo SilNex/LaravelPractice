@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/{board}/posts', 'PostController');
 
 Route::post('/posts/{post}/comments', 'CommentController@store')->name('comments.store');
+Route::delete('/posts/{post}/comments/{comment}', 'CommentController@destroy')->name('comments.destroy');
 
 Route::resource('/boards', 'BoardController');
 

@@ -16,8 +16,14 @@
 <div class="mt-4 d-flex justify-content-center">
     {{ $comments->links() }}
 </div>
-@foreach ($comments as $coment)
-<div class="border m-2 p-2">
-    {{ $coment->content }}
+@foreach ($comments as $comment)
+<div class="border m-2 p-2 d-flex justify-content-between align-items-center">
+    <div class="mr-2">
+        {{ $comment->user->name }}
+    </div>
+    <div class="mr-2">
+        {{ $comment->content }}
+    </div>
+    <button type="button" onclick="comment_delete({{ $comment->id }})" class="btn btn-danger">Del</button>
 </div>
 @endforeach

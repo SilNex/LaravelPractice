@@ -49350,7 +49350,7 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-__webpack_require__(/*! ./modal */ "./resources/js/modal.js");
+__webpack_require__(/*! ./common */ "./resources/js/common.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /**
@@ -49421,6 +49421,40 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/common.js":
+/*!********************************!*\
+  !*** ./resources/js/common.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function redirect_after_delete(response) {
+  if (response.status === 200) {
+    var redirect = response.data['redirect'];
+
+    if (redirect) {
+      location.href = redirect;
+    } else {
+      console.log(response.data);
+    }
+  }
+}
+
+window.delete_request = function () {
+  axios["delete"](window.location.pathname.replace('/edit', '')).then(function (response) {
+    redirect_after_delete(response);
+  });
+};
+
+window.comment_delete = function (comment_id) {
+  post_id = window.location.pathname.split('/')[3];
+  axios["delete"]("/posts/".concat(post_id, "/comments/").concat(comment_id)).then(function (response) {
+    redirect_after_delete(response);
+  });
+};
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue ***!
@@ -49487,27 +49521,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
-
-/***/ }),
-
-/***/ "./resources/js/modal.js":
-/*!*******************************!*\
-  !*** ./resources/js/modal.js ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-window.delete_request = function () {
-  axios["delete"](window.location.pathname.replace('/edit', '')).then(function (response) {
-    if (response.status === 200) {
-      var redirect = response.data['redirect'];
-
-      if (redirect) {
-        location.href = redirect;
-      }
-    }
-  });
-};
 
 /***/ }),
 

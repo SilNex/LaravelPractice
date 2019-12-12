@@ -6,6 +6,7 @@ use App\Comment;
 use App\Http\Requests\StoreComment;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class CommentController extends Controller
 {
@@ -50,8 +51,11 @@ class CommentController extends Controller
      * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Post $post, Comment $comment)
     {
-        //
+        $comment->delete();
+        return response()->json([
+            'redirect' => URL::previous(),
+        ]);
     }
 }
