@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class BoardPostCommentTableSeeder extends Seeder
 {
@@ -11,16 +12,21 @@ class BoardPostCommentTableSeeder extends Seeder
         $boards = factory('App\Board', 3)->create();
         $posts = collect([]);
         for ($i=0; $i < 20; $i++) {
+            $user = $users->random();
+            $board = $boards->random();
+            if ($user->canNot("{$board->name} use")) {
+                $user->givePermissionTo("{$board->name} use");
+            }
             $posts[] = factory('App\Post')->create([
-                'board_id' => $boards->random(),
-                'user_id' => $users->random(),
+                'board_id' => $board->id,
+                'user_id' => $user->id,
             ]);
         }
         $comments = collect([]);
         for ($i=0; $i < 40; $i++) {
             $comments[] = factory('App\Comment')->create([
-                'post_id' => $posts->random(),
-                'user_id' => $users->random(),
+                'post_id' => $posts->random()->id,
+                'user_id' => $users->random()->id,
             ]);
         }
     }
