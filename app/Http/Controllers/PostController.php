@@ -58,7 +58,7 @@ class PostController extends Controller
      */
     public function show(Board $board, Post $post)
     {
-        $comments = $post->comments()->simplePaginate(10);
+        $comments = $post->comments()->with('user')->simplePaginate(10);
         return view('post.show', compact(['board', 'post', 'comments']));
     }
 
