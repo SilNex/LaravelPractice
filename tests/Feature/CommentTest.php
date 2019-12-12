@@ -48,6 +48,16 @@ class CommentTest extends TestCase
     {
         $this->actingAs($this->user)->delete("/posts/{$this->post->id}/comments/{$this->comment->id}")
             ->assertSuccessful();
-        $this->assertDatabaseMissing('comments', $this->comment->toArray());
+        $this->assertDeleted('comments', $this->comment->toArray());
+    }
+
+    public function testCannotDeleteOtherUserCommnet(): void
+    {
+        $this->comment->update([
+            'user_id' => $this->user->id - 1,
+        ]);
+        $this->actingAs($this->user)->delete("/posts/{$this->post->id}/comments/{$this->comment->id}")
+            ->assertForbidden();
+        $this->assertDeleted('comments', $this->comment->toArray());
     }
 }

@@ -46,6 +46,23 @@ class PostTest extends TestCase
         $this->assertDatabaseHas('posts', $post);
     }
 
+    public function testDeletePost(): void
+    {
+        $this->actingAs($this->user)->delete("{$this->board->name}/posts/{$this->post->id}")
+            ->assertSuccessful();
+        $this->assertDeleted('posts', $this->post->toArray());
+    }
+
+    public function testCannotDeleteOtherUserPost(): void
+    {
+        $this->post->update([
+            'user_id' => $this->user->id - 1,
+        ]);
+        $this->actingAs($this->user)->delete("{$this->board->name}/posts/{$this->post->id}")
+            ->assertForbidden();
+        $this->assertDatabaseHas('posts', $this->post->toArray());
+    }
+
     /** @test */
     public function testForbiddenRequest()
     {
