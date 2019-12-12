@@ -43,4 +43,11 @@ class CommentTest extends TestCase
             ->assertRedirect("/{$this->board->name}/posts/{$this->post->id}?page={$lastPage}");
         $this->assertDatabaseHas('comments', $comment);
     }
+
+    public function testDeleteComment(): void
+    {
+        $this->actingAs($this->user)->delete("/posts/{$this->post->id}/comments/{$this->comment->id}")
+            ->assertSuccessful();
+        $this->assertDatabaseMissing('comments', $this->comment->toArray());
+    }
 }
