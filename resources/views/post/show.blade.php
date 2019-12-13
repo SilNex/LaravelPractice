@@ -11,10 +11,12 @@
                     <p class="card-text">{{ $post->content }}</p>
 
                     <div class="text-right mt-2">
+                        <a href="{{ route('posts.index', $board->name) }}" class="btn btn-secondary">List</a>
+                        @canany(['delete', 'update'], $post)
                         <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#deleteModal"
                             role="button">Delete</button>
-                        <a href="{{ route('posts.index', $board->name) }}" class="btn btn-secondary">List</a>
                         <a href="{{ route('posts.edit', [$board->name, $post->id]) }}" class="btn btn-primary">Edit</a>
+                        @endcanany
                     </div>
                 </div>
                 <div>
