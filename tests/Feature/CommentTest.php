@@ -32,7 +32,7 @@ class CommentTest extends TestCase
     public function testGetCommentList(): void
     {
         $this->actingAs($this->user)->get("/{$this->board->name}/posts/{$this->post->id}")
-            ->assertViewHas('comments', $this->post->comments()->simplePaginate(10));
+            ->assertViewHas('comments', $this->post->comments()->with('user')->simplePaginate(10));
     }
 
     public function testCreateComment(): void
