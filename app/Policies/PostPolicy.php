@@ -13,9 +13,6 @@ class PostPolicy
     public function before(User $user, $ability)
     {
         $this->boardName = explode('/', request()->path())[0];
-        if ($user->can("{$this->boardName} use")) {
-            return true;
-        }
     }
 
     /**
@@ -26,7 +23,9 @@ class PostPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if ($user->can("{$this->boardName} use")) {
+            return true;
+        }
     }
 
     /**
@@ -38,7 +37,9 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        //
+        if ($user->can("{$this->boardName} use")) {
+            return true;
+        }
     }
 
     /**
@@ -49,7 +50,9 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        if ($user->can("{$this->boardName} use")) {
+            return true;
+        }
     }
 
     /**

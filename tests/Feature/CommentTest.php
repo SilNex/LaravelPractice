@@ -58,6 +58,6 @@ class CommentTest extends TestCase
         ]);
         $this->actingAs($this->user)->delete("/posts/{$this->post->id}/comments/{$this->comment->id}")
             ->assertForbidden();
-        $this->assertDeleted('comments', $this->comment->toArray());
+        $this->assertDatabaseHas('comments', $this->comment->toArray());
     }
 }

@@ -13,11 +13,8 @@ class CommentPolicy
 
     public function before(User $user, $ability)
     {
-        $post = Post::find(explode('/', request()->path())[1]);
-        $this->boardName = $post->board->name;
-        if ($user->can("{$this->boardName} use")) {
-            return true;
-        }
+        $this->post = Post::find(explode('/', request()->path())[1]);
+        $this->boardName = $this->post->board->name;
     }
 
     /**
@@ -28,7 +25,9 @@ class CommentPolicy
      */
     public function create(User $user)
     {
-        //
+        if ($user->can("{$this->boardName} use")) {
+            return true;
+        }
     }
 
     /**
@@ -40,7 +39,9 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment)
     {
-        //
+        if($user->is($comment->user)) {
+            return true;
+        }
     }
 
     /**
@@ -52,6 +53,8 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        //
+        if($user->is($comment->user)) {
+            return true;
+        }
     }
 }
