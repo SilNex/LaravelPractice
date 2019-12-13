@@ -11,12 +11,6 @@ class CommentPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, $ability)
-    {
-        $this->post = Post::find(explode('/', request()->path())[1]);
-        $this->boardName = $this->post->board->name;
-    }
-
     /**
      * Determine whether the user can create comments.
      *
@@ -25,6 +19,8 @@ class CommentPolicy
      */
     public function create(User $user)
     {
+        $this->post = Post::find(explode('/', request()->path())[1]);
+        $this->boardName = $this->post->board->name;
         if ($user->can("{$this->boardName} use")) {
             return true;
         }
