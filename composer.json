@@ -17,6 +17,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
+        "barryvdh/laravel-ide-helper": "^2.6",
         "codedungeon/phpunit-result-printer": "^0.26.2",
         "facade/ignition": "^1.4",
         "fzaninotto/faker": "^1.4",
