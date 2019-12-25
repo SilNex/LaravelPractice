@@ -1,17 +1,12 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Example Component</div>
-
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
+        <div>
+            <b-nav>
+                <b-nav-item active>Active</b-nav-item>
+                <b-nav-item>Link</b-nav-item>
+                <b-nav-item>Another Link</b-nav-item>
+                <b-nav-item disabled>Disabled</b-nav-item>
+            </b-nav>
         </div>
-    </div>
 </template>
 
 <script>
