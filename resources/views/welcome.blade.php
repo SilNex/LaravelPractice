@@ -28,7 +28,23 @@
 
 <body>
     <div id='app'>
-        <example-component></example-component>
+        <header>
+            Logo Here
+        </header>
+
+        <b-container fluid class="d-flex">
+            <nav class="col-md-3 col-xl-2">
+                Link Here
+            </nav>
+            <div class="col-md-9 col-xl-8 py-md-3 pl-md-5">
+                main
+            </div>
+            <aside class="col-md-3 col-xl-2">
+                aside
+            </aside>
+        </b-container>
+
+
     </div>
 </body>
 
