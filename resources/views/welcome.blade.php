@@ -44,6 +44,10 @@
             </aside>
         </b-container>
 
+        <footer>
+            footer
+        </footer>
+
 
     </div>
 </body>
