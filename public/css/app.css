@@ -11356,3 +11356,11 @@ a.text-dark:focus {
   }
 }
 
+.min-vh-75 {
+  min-height: 75vh;
+}
+
+li {
+  list-style: none;
+}
+
