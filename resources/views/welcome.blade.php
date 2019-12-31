@@ -36,32 +36,15 @@
 
         <b-container class="d-flex min-vh-75">
             <b-row>
-                <b-col md="2">
-                    <b-list-group>
-                        <b-list-group-item v-for="link in [1,2,3,4]">
-                            Link @{{ link }}
-                        </b-list-group-item>
-                    </b-list-group>
-                </b-col>
-                <b-col md="8">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum beatae ipsam blanditiis reiciendis repellat consequatur pariatur. Quae fuga ipsa sapiente magni ipsam. Distinctio ab dicta, corrupti odio in eligendi nesciunt.</p>
-                </b-col>
-                <b-col md="2">
-                    <b-list-group>
-                        <b-list-group-item href="#some-link">Awesome link</b-list-group-item>
-                        <b-list-group-item href="#" active>Link with active state</b-list-group-item>
-                        <b-list-group-item href="#">Action links are easy</b-list-group-item>
-                        <b-list-group-item href="#foobar" disabled>Disabled link</b-list-group-item>
-                    </b-list-group>
-                <b-col>
+                <main-menu></main-menu>
+                <main-content></main-content>
+                <sub-menu></sub-menu>
             </b-row>
         </b-container>
 
         <footer>
             <h4> Footer </h4>
         </footer>
-
-
     </div>
 </body>
 
