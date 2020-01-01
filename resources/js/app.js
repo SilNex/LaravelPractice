@@ -13,3 +13,5 @@ Vue.component('main-content', require('./components/MainContent.vue').default);
 const app = new Vue({
     el: '#app',
 });
+
+console.log('Deployed!')

@@ -68,3 +68,11 @@ jobs:
           path: tests/_output
       - store_artifacts:
           path: tests/_output
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: |
+            ssh $SSH_USER@$SSH_HOST "sh /home/ubuntu/deploy.sh"
