@@ -1869,7 +1869,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      links: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("/api/links").then(function (response) {
+      _this.links = response.data;
+    });
+  }
+});
 
 /***/ }),
 
@@ -66619,7 +66632,7 @@ var render = function() {
   return _c(
     "b-col",
     { attrs: { md: "2" } },
-    _vm._l([1, 2, 3, 4], function(link) {
+    _vm._l(_vm.links, function(link) {
       return _c("b-list-group-item", { key: link }, [
         _vm._v("\n        Link " + _vm._s(link) + "\n    ")
       ])
@@ -78834,17 +78847,22 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
 
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.component('main-menu', __webpack_require__(/*! ./components/MainMenu.vue */ "./resources/js/components/MainMenu.vue")["default"]);
-Vue.component('sub-menu', __webpack_require__(/*! ./components/SubMenu.vue */ "./resources/js/components/SubMenu.vue")["default"]);
-Vue.component('main-content', __webpack_require__(/*! ./components/MainContent.vue */ "./resources/js/components/MainContent.vue")["default"]);
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  components: {
+    'main-content': __webpack_require__(/*! ./components/MainContent.vue */ "./resources/js/components/MainContent.vue")["default"],
+    'main-menu': __webpack_require__(/*! ./components/MainMenu.vue */ "./resources/js/components/MainMenu.vue")["default"],
+    'sub-menu': __webpack_require__(/*! ./components/SubMenu.vue */ "./resources/js/components/SubMenu.vue")["default"]
+  }
 });
 
 /***/ }),
