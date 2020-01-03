@@ -7,6 +7,8 @@ use App\Http\Requests\StoreBoard;
 use App\Http\Requests\UpdateBoard;
 use Illuminate\Http\Request;
 
+use function App\autoApiHtmlReturner;
+
 class BoardController extends Controller
 {
     public function __construct()
@@ -23,8 +25,7 @@ class BoardController extends Controller
     public function index()
     {
         $boards = Board::all();
-
-        return view('board.index', compact('boards'));
+        return autoApiHtmlReturner($boards->toJson(), view('board.index', compact('boards')));
     }
 
     /**
@@ -34,7 +35,7 @@ class BoardController extends Controller
      */
     public function create()
     {
-        return view('board.create');
+        return autoApiHtmlReturner(response('Not Found', 404), view('board.create'));
     }
 
     /**
@@ -46,7 +47,7 @@ class BoardController extends Controller
     public function store(StoreBoard $request)
     {
         $board = Board::create($request->validated());
-        return $board ? redirect(route('boards.index')) : redirect(route('boards.create'));
+        return autoApiHtmlReturner(response($board->toJson(), 201), $board ? redirect(route('boards.index')) : redirect(route('boards.create')));
     }
 
     /**
@@ -57,7 +58,7 @@ class BoardController extends Controller
      */
     public function show(Board $board)
     {
-        return view('board.show', $board);
+        return autoApiHtmlReturner($board->toJson(), view('board.show', $board));
     }
 
     /**
@@ -68,7 +69,7 @@ class BoardController extends Controller
      */
     public function edit(Board $board)
     {
-        return view('board.edit', $board);
+        return autoApiHtmlReturner(response('Not Found', 404), view('board.show', $board));
     }
 
     /**
@@ -81,9 +82,12 @@ class BoardController extends Controller
     public function update(UpdateBoard $request, Board $board)
     {
         return ($board->update($request->validated())
-            && (isset($request->name) ? $request->name === $board->name : true))
+            && autoApiHtmlReturner(
+                $board->toJson(),
+                (isset($request->name) ? $request->name === $board->name : true)
+            )
             ? redirect()->route('boards.show', $board->name, 301)
-            : redirect()->route('boards.edit', $board->name);
+            : redirect()->route('boards.edit', $board->name));
     }
 
     /**
@@ -95,8 +99,8 @@ class BoardController extends Controller
     public function destroy(Board $board)
     {
         $board->delete();
-        return response()->json([
+        return autoApiHtmlReturner(response('', 204), response()->json([
             'redirect' => route('boards.index'),
-        ]);
+        ]));
     }
 }
