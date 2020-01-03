@@ -1861,6 +1861,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 //
 //
 //
@@ -1880,6 +1882,21 @@ __webpack_require__.r(__webpack_exports__);
         'name': 'Board list'
       }]
     };
+  },
+  methods: {
+    setSubMenu: function setSubMenu(href) {
+      var subMenu = axios.get(href).then(function (response) {
+        if (response.status === 200 && _typeof(response.data) === "object") {
+          return response.data;
+        } else {
+          return false;
+        }
+      });
+
+      if (subMenu) {// console.log(subMenu)
+        // need event bus
+      }
+    }
   }
 });
 
@@ -66634,7 +66651,14 @@ var render = function() {
     _vm._l(_vm.links, function(link) {
       return _c(
         "b-list-group-item",
-        { key: link.href, attrs: { href: link.href } },
+        {
+          key: link.href,
+          on: {
+            click: function($event) {
+              return _vm.setSubMenu(link.href)
+            }
+          }
+        },
         [_vm._v("\n        " + _vm._s(link.name) + "\n    ")]
       )
     }),
