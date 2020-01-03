@@ -1,7 +1,7 @@
 <template>
     <b-col md="2">
-        <b-list-group-item v-for="link in links" :key="link">
-            Link {{ link }}
+        <b-list-group-item v-for="link in links" :key="link.href" :href="link.href">
+            {{link.name}}
         </b-list-group-item>
     </b-col>
 </template>
@@ -10,14 +10,17 @@
 export default {
     data() {
         return {
-            links: []
+            links: [
+                {
+                    'href': '/login',
+                    'name': 'Login'
+                },
+                {
+                    'href': '/boards',
+                    'name': 'Board list'
+                }
+            ]
         }
-    },
-    created() {
-        axios.get("/api/links")
-            .then((response) => {
-                this.links = response.data
-            });
     }
 };
 </script>

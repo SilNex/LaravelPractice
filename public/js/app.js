@@ -1872,15 +1872,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      links: []
+      links: [{
+        'href': '/login',
+        'name': 'Login'
+      }, {
+        'href': '/boards',
+        'name': 'Board list'
+      }]
     };
-  },
-  created: function created() {
-    var _this = this;
-
-    axios.get("/api/links").then(function (response) {
-      _this.links = response.data;
-    });
   }
 });
 
@@ -66633,9 +66632,11 @@ var render = function() {
     "b-col",
     { attrs: { md: "2" } },
     _vm._l(_vm.links, function(link) {
-      return _c("b-list-group-item", { key: link }, [
-        _vm._v("\n        Link " + _vm._s(link) + "\n    ")
-      ])
+      return _c(
+        "b-list-group-item",
+        { key: link.href, attrs: { href: link.href } },
+        [_vm._v("\n        " + _vm._s(link.name) + "\n    ")]
+      )
     }),
     1
   )
